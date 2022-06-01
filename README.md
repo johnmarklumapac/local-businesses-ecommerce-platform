@@ -1,1 +1,0 @@
-# local-businesses-ecommerce-platform
