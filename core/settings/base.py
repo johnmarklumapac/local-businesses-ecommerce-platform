@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "mptt",
     "core",
     "checkout",
+    "pasundayag",
 ]
 
 MIDDLEWARE = [
