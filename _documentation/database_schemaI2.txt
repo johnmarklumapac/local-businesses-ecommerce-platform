@@ -1,0 +1,84 @@
+Table Personnel as PN {
+  id int [pk, increment]
+  status boolean
+  name varchar
+  rank varchar
+  area_of_assignment varchar
+  gender varchar
+  employee_status varchar
+  birthdate birthdate
+  age int
+  highest_educational_level varchar
+  degree varchar
+  ra_1080 boolean
+  ra_9258 boolean
+  csc_prof boolean
+  csc_sub_prof boolean
+  pd_907 boolean
+  tesda_nc boolean
+  boe boolean
+  csee boolean
+  date_hired date
+  legth_of_service DurationField
+}
+
+Table IPCR as IP {
+  id int [pk, increment]
+  ipcr_id int
+  stra_e1 int
+  stra_e2 int
+  stra_e3 int
+  stra_a1 int
+  stra_a2 int
+  stra_a3 int
+  stra_total int
+  core_q1 int
+  core_q2 int
+  core_q3 int
+  core_q4 int
+  core_e1 int
+  core_e2 int
+  core_e3 int
+  core_e4 int
+  core_e5 int
+  core_e6 int
+  core_e7 int
+  core_e8 int
+  core_e9 int
+  core_e10 int
+  core_e11 int
+  core_e12 int
+  core_e13 int
+  core_e14 int
+  core_e15 int
+  core_a1 int
+  core_a2 int
+  core_a3 int
+  core_a4 int
+  core_a5 int
+  core_a6 int
+  core_a7 int
+  core_a8 int
+  core_a9 int
+  core_a10 int
+  core_a11 int
+  core_a12 int
+  core_total1 int
+  core_total2 int
+  supp_e1 int
+  supp_e2 int
+  supp_e3 int
+  supp_e4 int
+  supp_e5 int
+  supp_t5 int
+  supp_a int
+  supp_a int
+  supp_a int
+  supp_a int
+  supp_a int
+  supp_a int
+  supp_total int
+  final_numerical_rating int
+  final_adjectival_rating varchar
+}
+Ref: PN.id - IP.ipcr_id
