@@ -71,12 +71,12 @@ Table IPCR as IP {
   supp_e4 int
   supp_e5 int
   supp_t5 int
-  supp_a int
-  supp_a int
-  supp_a int
-  supp_a int
-  supp_a int
-  supp_a int
+  supp_a1 int
+  supp_a2 int
+  supp_a3 int
+  supp_a4 int
+  supp_a5 int
+  supp_a6 int
   supp_total int
   final_numerical_rating int
   final_adjectival_rating varchar
