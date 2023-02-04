@@ -51,6 +51,7 @@ Table IPCR as IP {
   core_e13 int
   core_e14 int
   core_e15 int
+  core_t1 int
   core_a1 int
   core_a2 int
   core_a3 int
