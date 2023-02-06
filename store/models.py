@@ -46,8 +46,8 @@ class ProductType(models.Model):
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = _("Product Type")
-        verbose_name_plural = _("Product Types")
+        verbose_name = _("Employement Status")
+        verbose_name_plural = _("Employement Status")
 
     def __str__(self):
         return self.name
@@ -181,8 +181,8 @@ class Product(models.Model):
 
     class Meta:
         ordering = ("-created_at",)
-        verbose_name = _("Product")
-        verbose_name_plural = _("Products")
+        verbose_name = _("IPCR")
+        verbose_name_plural = _("IPCRs")
 
     def get_absolute_url(self):
         return reverse("store:product_detail", args=[self.slug])

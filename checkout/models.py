@@ -49,8 +49,8 @@ class DeliveryOptions(models.Model):
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = _("Delivery Option")
-        verbose_name_plural = _("Delivery Options")
+        verbose_name = _("Evaluate")
+        verbose_name_plural = _("Evaluate")
 
     def __str__(self):
         return self.delivery_name

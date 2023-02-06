@@ -2,7 +2,7 @@
 {% load static %}
 {% block stylesheet %}{% static 'store/css/store.css' %}{% endblock %}
 {% block title %}
-{% if product %}{{ product.title }}{% else %}Product{% endif %}
+{% if product %}{{ product.title }}{% else %}IPCR{% endif %}
 {% endblock %}
 {% block content %}
 
@@ -98,17 +98,17 @@
       <div class="col-4 text-center border pt-3">
         <div class="h3 text-success">{{product.final_numerical_rating}}</div>
         <div class="h6 text-success">{{product.final_adjectival_rating}}</div>
-        <p class="text-success">(3.02% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+        <p class="text-success">(0.00% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
               fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
               <path
                 d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
             </svg></span> than previos IPCR rating)</p>
-        <div class="h4">Strategic funcions</div>
+        <div class="h4">Strategic functions</div>
       </div>
       <div class="col-4 text-center border-bottom-0  pt-3">
         <div class="h3 text-success">{{product.final_numerical_rating}}</div>
         <div class="h6 text-success">{{product.final_adjectival_rating}}</div>
-        <p class="text-success">(3.02% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+        <p class="text-success">(0.00% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
               fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
               <path
                 d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
@@ -118,7 +118,7 @@
       <div class="col-4 text-center border pt-3">
         <div class="h3 text-success text-danger">{{product.final_numerical_rating}}</div>
         <div class="h6 text-success text-danger">{{product.final_adjectival_rating}}</div>
-        <p class="text-danger">(1.05% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+        <p class="text-danger">(0.00% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
               fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
               <path
                 d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />

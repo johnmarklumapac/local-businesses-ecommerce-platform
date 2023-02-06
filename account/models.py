@@ -67,8 +67,8 @@ class Customer(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["name"]
 
     class Meta:
-        verbose_name = "Accounts"
-        verbose_name_plural = "Accounts"
+        verbose_name = "Personel"
+        verbose_name_plural = "Personels"
 
     def email_user(self, subject, message):
         send_mail(
