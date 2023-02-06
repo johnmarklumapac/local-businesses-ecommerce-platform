@@ -16,4 +16,4 @@ def rank_list(request, rank_slug=None):
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, is_active=True)
-    return render(request, "pasaundayag/single.html", {"product": product})
+    return render(request, "pasundayag/single.html", {"product": product})
