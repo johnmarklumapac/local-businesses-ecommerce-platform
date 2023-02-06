@@ -7,18 +7,18 @@ from mptt.models import MPTTModel, TreeForeignKey
 from account.models import Customer
 
 
-class Category(MPTTModel):
+class Rank(MPTTModel):
     """
-    Category Table implimented with MPTT.
+    Rank Table implimented with MPTT.
     """
 
     name = models.CharField(
-        verbose_name=_("Category Name"),
+        verbose_name=_("Rank Name"),
         help_text=_("Required and unique"),
         max_length=255,
         unique=True,
     )
-    slug = models.SlugField(verbose_name=_("Category safe URL"), max_length=255, unique=True)
+    slug = models.SlugField(verbose_name=_("Rank safe URL"), max_length=255, unique=True)
     parent = TreeForeignKey("self", on_delete=models.CASCADE, null=True, blank=True, related_name="children")
     is_active = models.BooleanField(default=True)
 
@@ -26,11 +26,11 @@ class Category(MPTTModel):
         order_insertion_by = ["name"]
 
     class Meta:
-        verbose_name = _("Category")
-        verbose_name_plural = _("Categories")
+        verbose_name = _("Rank")
+        verbose_name_plural = _("Ranks")
 
     def get_absolute_url(self):
-        return reverse("store:category_list", args=[self.slug])
+        return reverse("pasundayag:rank_list", args=[self.slug])
 
     def __str__(self):
         return self.name
@@ -76,7 +76,7 @@ class Product(models.Model):
     """
 
     product_type = models.ForeignKey(ProductType, on_delete=models.RESTRICT)
-    category = models.ForeignKey(Category, on_delete=models.RESTRICT)
+    rank = models.ForeignKey(Rank, on_delete=models.RESTRICT)
     title = models.CharField(
         verbose_name=_("title"),
         help_text=_("Required"),
@@ -185,7 +185,7 @@ class Product(models.Model):
         verbose_name_plural = _("IPCRs")
 
     def get_absolute_url(self):
-        return reverse("store:product_detail", args=[self.slug])
+        return reverse("pasundayag:product_detail", args=[self.slug])
 
     def __str__(self):
         return self.title

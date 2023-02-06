@@ -8,7 +8,7 @@ class DeliveryOptions(models.Model):
     """
 
     DELIVERY_CHOICES = [
-        ("IS", "In Store"),
+        ("IS", "In Pasundayag"),
         ("HD", "Home Delivery"),
         ("DD", "Digital Delivery"),
     ]
@@ -58,7 +58,7 @@ class DeliveryOptions(models.Model):
 
 class PaymentSelections(models.Model):
     """
-    Store payment options
+    Pasundayag payment options
     """
 
     name = models.CharField(

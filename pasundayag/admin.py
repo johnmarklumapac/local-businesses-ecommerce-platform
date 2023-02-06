@@ -3,15 +3,15 @@ from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 
 from .models import (
-    Category,
     Product,
     ProductImage,
     ProductSpecification,
     ProductSpecificationValue,
     ProductType,
+    Rank,
 )
 
-admin.site.register(Category, MPTTModelAdmin)
+admin.site.register(Rank, MPTTModelAdmin)
 
 
 class ProductSpecificationInline(admin.TabularInline):

@@ -1,6 +1,6 @@
 {% extends "../base.html" %}
 {% load static %}
-{% block stylesheet %}{% static 'store/css/store.css' %}{% endblock %}
+{% block stylesheet %}{% static 'pasundayag/css/pasundayag.css' %}{% endblock %}
 {% block title %}
 {% if product %}{{ product.title }}{% else %}IPCR{% endif %}
 {% endblock %}
@@ -23,7 +23,7 @@
           </div>
           <div>
             <label for="select">Qty</label>
-            <select id="select" class="h6 store-select-dropdown">
+            <select id="select" class="h6 pasundayag-select-dropdown">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -79,7 +79,7 @@
       </div>
       <div class="col-4 pt-5 pl-5 text-start">
         <h2>{{ product.title }}</h2>
-        <h4>{{product.category}}</h4>
+        <h4>{{product.rank}}</h4>
         <p>({{product.product_type}})</p>
       </div>
       <div class="col-5 text-center pt-4 px-3 border">
@@ -265,7 +265,7 @@
           <td>{{product.core_e3}}</td>
           <td></td>
           <td>{{product.core_a3}}</td>
-          <td> reference books; 2 sites; 6 learning materials (design, SQL, View, Stored Proc,
+          <td> reference books; 2 sites; 6 learning materials (design, SQL, View, Pasundayagd Proc,
             Triggers, and Data Migration)</td>
         </tr>
         <tr>
