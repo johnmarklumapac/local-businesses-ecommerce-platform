@@ -43,9 +43,9 @@
               </a>
               <ul class="dropdown-menu rounded-0 border-0" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url "pasundayag:pasundayag_home" %}">All</a></li>
-                {% for c in categories %}
-                <li {% if rank.slug == c.slug %}class="selected" {% endif %}>
-                  <a class="dropdown-item" href="{{ c.get_absolute_url }}">{{ c.name|title }}</a>
+                {% for r in ranks %}
+                <li {% if rank.slug == r.slug %}class="selected" {% endif %}>
+                  <a class="dropdown-item" href="{{ r.get_absolute_url }}">{{ r.name|title }}</a>
                 </li>
                 {% endfor %}
               </ul>
@@ -124,9 +124,9 @@
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
               <li><a class="dropdown-item" href="{% url "pasundayag:pasundayag_home" %}">All</a></li>
-              {% for c in categories %}
-              <li {% if rank.slug == c.slug %}class="selected" {% endif %}>
-                <a class="dropdown-item" href="{{ c.get_absolute_url }}">{{ c.name|title }}</a>
+              {% for r in ranks %}
+              <li {% if rank.slug == r.slug %}class="selected" {% endif %}>
+                <a class="dropdown-item" href="{{ r.get_absolute_url }}">{{ r.name|title }}</a>
               </li>
               {% endfor %}
             </ul>
@@ -142,7 +142,7 @@
           </div>
         </div>
         <form class="d-flex w-100 d-md-none">
-          <input class="form-control me-2" type="search" placeholder="Search products or FAQ" aria-label="Search">
+          <input class="form-control me-2" type="search" placeholder="Search ipcrs or FAQ" aria-label="Search">
           <button class="btn btn-outline-secondary" type="submit">Search</button>
         </form>
       </div>

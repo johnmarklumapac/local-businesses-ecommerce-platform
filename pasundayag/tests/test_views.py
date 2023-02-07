@@ -7,8 +7,8 @@ from django.http import HttpRequest
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from pasundayag.models import Product, Rank
-from pasundayag.views import product_all
+from pasundayag.models import IPCR, Rank
+from pasundayag.views import ipcr_all
 
 
 @skip("demonstrating skipping")
@@ -22,7 +22,7 @@ class TestViewResponses(TestCase):
         self.c = Client()
         User.objects.create(username="admin")
         Rank.objects.create(name="django", slug="django")
-        Product.objects.create(
+        IPCR.objects.create(
             rank_id=1,
             title="django beginners",
             created_by_id=1,
@@ -47,18 +47,18 @@ class TestViewResponses(TestCase):
         response = self.c.get("/")
         self.assertEqual(response.status_code, 200)
 
-    def test_product_list_url(self):
+    def test_ipcr_list_url(self):
         """
         Test rank response status
         """
         response = self.c.get(reverse("pasundayag:rank_list", args=["django"]))
         self.assertEqual(response.status_code, 200)
 
-    def test_product_detail_url(self):
+    def test_ipcr_detail_url(self):
         """
         Test items response status
         """
-        response = self.c.get(reverse("pasundayag:product_detail", args=["django-beginners"]))
+        response = self.c.get(reverse("pasundayag:ipcr_detail", args=["django-beginners"]))
         self.assertEqual(response.status_code, 200)
 
     def test_homepage_html(self):
@@ -68,7 +68,7 @@ class TestViewResponses(TestCase):
         request = HttpRequest()
         engine = import_module(settings.SESSION_ENGINE)
         request.session = engine.SessionPasundayag()
-        response = product_all(request)
+        response = ipcr_all(request)
         html = response.content.decode("utf8")
         self.assertIn("<title>BookPasundayag</title>", html)
         self.assertTrue(html.startswith("\n<!DOCTYPE html>\n"))

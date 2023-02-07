@@ -8,9 +8,10 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+
 from orders.models import Order
 from orders.views import user_orders
-from pasundayag.models import Product
+from pasundayag.models import IPCR
 
 from .forms import RegistrationForm, UserAddressForm, UserEditForm
 from .models import Address, Customer
@@ -19,19 +20,19 @@ from .tokens import account_activation_token
 
 @login_required
 def wishlist(request):
-    products = Product.objects.filter(users_wishlist=request.user)
-    return render(request, "account/dashboard/user_wish_list.html", {"wishlist": products})
+    ipcrs = IPCR.objects.filter(users_wishlist=request.user)
+    return render(request, "account/dashboard/user_wish_list.html", {"wishlist": ipcrs})
 
 
 @login_required
 def add_to_wishlist(request, id):
-    product = get_object_or_404(Product, id=id)
-    if product.users_wishlist.filter(id=request.user.id).exists():
-        product.users_wishlist.remove(request.user)
-        messages.success(request, product.title + " has been removed from your WishList")
+    ipcr = get_object_or_404(IPCR, id=id)
+    if ipcr.users_wishlist.filter(id=request.user.id).exists():
+        ipcr.users_wishlist.remove(request.user)
+        messages.success(request, ipcr.title + " has been removed from your WishList")
     else:
-        product.users_wishlist.add(request.user)
-        messages.success(request, "Added " + product.title + " to your WishList")
+        ipcr.users_wishlist.add(request.user)
+        messages.success(request, "Added " + ipcr.title + " to your WishList")
     return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
 

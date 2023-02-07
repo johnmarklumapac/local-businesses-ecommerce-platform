@@ -53,11 +53,11 @@
     </div>
     <div class="col-md-7 col-lg-8 p-0">
       {% for item in basket %}
-      {% with product=item.product %}
-      <div class="card mb-3 border-0 product-item" data-index="{{product.id}}">
+      {% with ipcr=item.ipcr %}
+      <div class="card mb-3 border-0 ipcr-item" data-index="{{ipcr.id}}">
         <div class="row g-0">
           <div class="col-md-2 d-none d-md-block">
-            {% for image in product.product_image.all %}
+            {% for image in ipcr.ipcr_image.all %}
             {% if image.is_feature%}
             <img class="img-fluid" alt="Responsive image" src="{{ image.image.url }}" alt="{{ image.image.alt_text }}">
             {% endif %}
@@ -65,20 +65,20 @@
           </div>
           <div class="col-md-10 ps-md-3">
             <div class="card-body p-1">
-              <a class="text-decoration-none text-reset" href="{{item.product.get_absolute_url}}">
-                <p class="card-text pb-3">{{product.title}}</p>
+              <a class="text-decoration-none text-reset" href="{{item.ipcr.get_absolute_url}}">
+                <p class="card-text pb-3">{{ipcr.title}}</p>
               </a>
               <label for="select">Qty</label>
-              <select id="select{{product.id}}" style="width:50px;height:31px;">
+              <select id="select{{ipcr.id}}" style="width:50px;height:31px;">
                 <option value="" selected disabled hidden>{{item.qty}}</option>
                 <option value="">1</option>
                 <option value="">2</option>
                 <option value="">3</option>
                 <option value="">4</option>
               </select>
-              <a type="button" id="update-button" data-index="{{product.id}}"
+              <a type="button" id="update-button" data-index="{{ipcr.id}}"
                 class="update-button text-decoration-none small ps-3">Update</a>
-              <a type="button" id="delete-button" data-index="{{product.id}}"
+              <a type="button" id="delete-button" data-index="{{ipcr.id}}"
                 class="delete-button text-decoration-none small">Delete</a>
             </div>
           </div>
@@ -100,12 +100,12 @@
       type: "POST",
       url: '{% url "basket:basket_delete" %}',
       data: {
-        productid: $(this).data("index"),
+        ipcrid: $(this).data("index"),
         csrfmiddlewaretoken: "{{csrf_token}}",
         action: "post",
       },
       success: function (json) {
-        $('.product-item[data-index="' + prodid + '"]').remove();
+        $('.ipcr-item[data-index="' + prodid + '"]').remove();
 
         if (json.qty == 0) {
           total = 0
@@ -131,8 +131,8 @@
       type: "POST",
       url: '{% url "basket:basket_update" %}',
       data: {
-        productid: $(this).data("index"),
-        productqty: $("#select" + prodid + " option:selected").text(),
+        ipcrid: $(this).data("index"),
+        ipcrqty: $("#select" + prodid + " option:selected").text(),
         csrfmiddlewaretoken: "{{csrf_token}}",
         action: "post",
       },

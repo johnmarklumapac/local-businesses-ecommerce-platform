@@ -3,39 +3,39 @@ from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 
 from .models import (
-    Product,
-    ProductImage,
-    ProductSpecification,
-    ProductSpecificationValue,
-    ProductType,
+    IPCR,
+    IPCRImage,
+    IPCRSpecification,
+    IPCRSpecificationValue,
+    IPCRType,
     Rank,
 )
 
 admin.site.register(Rank, MPTTModelAdmin)
 
 
-class ProductSpecificationInline(admin.TabularInline):
-    model = ProductSpecification
+class IPCRSpecificationInline(admin.TabularInline):
+    model = IPCRSpecification
 
 
-@admin.register(ProductType)
-class ProductTypeAdmin(admin.ModelAdmin):
+@admin.register(IPCRType)
+class IPCRTypeAdmin(admin.ModelAdmin):
     inlines = [
-        ProductSpecificationInline,
+        IPCRSpecificationInline,
     ]
 
 
-class ProductImageInline(admin.TabularInline):
-    model = ProductImage
+class IPCRImageInline(admin.TabularInline):
+    model = IPCRImage
 
 
-class ProductSpecificationValueInline(admin.TabularInline):
-    model = ProductSpecificationValue
+class IPCRSpecificationValueInline(admin.TabularInline):
+    model = IPCRSpecificationValue
 
 
-@admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+@admin.register(IPCR)
+class IPCRAdmin(admin.ModelAdmin):
     inlines = [
-        ProductSpecificationValueInline,
-        ProductImageInline,
+        IPCRSpecificationValueInline,
+        IPCRImageInline,
     ]

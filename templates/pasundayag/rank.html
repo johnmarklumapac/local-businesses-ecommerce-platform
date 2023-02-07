@@ -1,6 +1,6 @@
 {% extends "../base.html" %}
 {% block title %}
-{% if rank %}{{ rank.name }}{% else %}Products{% endif %}
+{% if rank %}{{ rank.name }}{% else %}IPCRs{% endif %}
 {% endblock %}
 {% block content %}
 
@@ -9,31 +9,31 @@
     <h1 class="h2">{{ rank.name|title }}</h1>
   </div>
   <div class="col-12 d-flex justify-content-between">
-    <div><b>Popular</b> products purchased</div>
+    <div><b>Popular</b> ipcrs purchased</div>
   </div>
   <hr />
 </div>
 <div class="container">
   <div class="row">
     <div class="album">
-      {% if not products %}
-      <div class="col-12">There are currently no products active <a href="{% url 'pasundayag:pasundayag_home' %}">Home</a></div>
+      {% if not ipcrs %}
+      <div class="col-12">There are currently no ipcrs active <a href="{% url 'pasundayag:pasundayag_home' %}">Home</a></div>
       {% else %}
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
-        {% for product in products %}
+        {% for ipcr in ipcrs %}
         <div class="col">
           <div class="card border-0">
-            {% for image in product.product_image.all %}
+            {% for image in ipcr.ipcr_image.all %}
             {% if image.is_feature%}
             <img class="img-fluid" alt="Responsive image" src="{{ image.image.url }}" alt="{{ image.image.alt_text }}">
             {% endif %}
             {% endfor %}
             <div class="card-body px-0">
               <p class="card-text">
-                <a class="text-dark text-decoration-none" href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                <a class="text-dark text-decoration-none" href="{{ ipcr.get_absolute_url }}">{{ ipcr.title }}</a>
               </p>
               <div class="d-flex justify-content-between align-items-center">
-                <small class="text-muted">P{{product.regular_price}}</small>
+                <small class="text-muted">P{{ipcr.regular_price}}</small>
               </div>
             </div>
           </div>

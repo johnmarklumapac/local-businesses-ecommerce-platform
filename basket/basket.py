@@ -3,7 +3,7 @@ from decimal import Decimal
 from django.conf import settings
 
 from checkout.models import DeliveryOptions
-from pasundayag.models import Product
+from pasundayag.models import IPCR
 
 
 class Basket:
@@ -19,30 +19,30 @@ class Basket:
             basket = self.session[settings.BASKET_SESSION_ID] = {}
         self.basket = basket
 
-    def add(self, product, qty):
+    def add(self, ipcr, qty):
         """
         Adding and updating the users basket session data
         """
-        product_id = str(product.id)
+        ipcr_id = str(ipcr.id)
 
-        if product_id in self.basket:
-            self.basket[product_id]["qty"] = qty
+        if ipcr_id in self.basket:
+            self.basket[ipcr_id]["qty"] = qty
         else:
-            self.basket[product_id] = {"price": str(product.regular_price), "qty": qty}
+            self.basket[ipcr_id] = {"price": str(ipcr.regular_price), "qty": qty}
 
         self.save()
 
     def __iter__(self):
         """
-        Collect the product_id in the session data to query the database
-        and return products
+        Collect the ipcr_id in the session data to query the database
+        and return ipcrs
         """
-        product_ids = self.basket.keys()
-        products = Product.objects.filter(id__in=product_ids)
+        ipcr_ids = self.basket.keys()
+        ipcrs = IPCR.objects.filter(id__in=ipcr_ids)
         basket = self.basket.copy()
 
-        for product in products:
-            basket[str(product.id)]["product"] = product
+        for ipcr in ipcrs:
+            basket[str(ipcr.id)]["ipcr"] = ipcr
 
         for item in basket.values():
             item["price"] = Decimal(item["price"])
@@ -55,13 +55,13 @@ class Basket:
         """
         return sum(item["qty"] for item in self.basket.values())
 
-    def update(self, product, qty):
+    def update(self, ipcr, qty):
         """
         Update values in session data
         """
-        product_id = str(product)
-        if product_id in self.basket:
-            self.basket[product_id]["qty"] = qty
+        ipcr_id = str(ipcr)
+        if ipcr_id in self.basket:
+            self.basket[ipcr_id]["qty"] = qty
         self.save()
 
     def get_subtotal_price(self):
@@ -90,14 +90,14 @@ class Basket:
         total = subtotal + Decimal(deliveryprice)
         return total
 
-    def delete(self, product):
+    def delete(self, ipcr):
         """
         Delete item from session data
         """
-        product_id = str(product)
+        ipcr_id = str(ipcr)
 
-        if product_id in self.basket:
-            del self.basket[product_id]
+        if ipcr_id in self.basket:
+            del self.basket[ipcr_id]
             self.save()
 
     def clear(self):

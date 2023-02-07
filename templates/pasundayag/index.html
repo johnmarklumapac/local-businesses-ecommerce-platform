@@ -18,13 +18,13 @@
         <div class="pb-3">
           <h1 class="h3">Perfomance Appraisal System</h1>
         </div>
-        {% if not products %}
-        <div class="col-12">There are currently no products active</div>
+        {% if not ipcrs %}
+        <div class="col-12">There are currently no ipcrs active</div>
         {% else %}
-        {% for product in products %}
+        {% for ipcr in ipcrs %}
           <div class="row border rounded mb-1">
             <div class="col col-lg-2 text-center p-3">
-                {% for image in product.product_image.all %}
+                {% for image in ipcr.ipcr_image.all %}
                 {% if image.is_feature%}
                 <img class="rounded-circle border" alt = "Rounded Image" width = "100" height = "100" src="{{ image.image.url }}"
                   alt="{{ image.image.alt_text }}">
@@ -36,11 +36,11 @@
                 <div class="card-body px-0">
                   <p class="card-text">
                     <a class="text-dark text-decoration-none fw-bold h"
-                      href="{{ product.get_absolute_url }}">{{ product.title|slice:":50" }}
+                      href="{{ ipcr.get_absolute_url }}">{{ ipcr.title|slice:":50" }}
                     </a>
                   </p>
-                  <div class="">{{product.rank}}</div>
-                  <div class="">{{product.product_type}}</div>
+                  <div class="">{{ipcr.rank}}</div>
+                  <div class="">{{ipcr.ipcr_type}}</div>
                 </div>
               </div>
             </div>
@@ -49,7 +49,7 @@
                 <div class="card-body px-0">
                   <p class="card-text">
                     <a class="h4 text-success text-decoration-none"
-                      href="{{ product.get_absolute_url }}">{{product.final_adjectival_rating}}
+                      href="{{ ipcr.get_absolute_url }}">{{ipcr.final_adjectival_rating}}
                     </a>
                   </p>
                   <div class="">Final Adjectival Rating</div>
@@ -61,7 +61,7 @@
                 <div class="card-body px-0">
                   <p class="card-text">
                     <a class="h3 text-decoration-none text-success"
-                      href="{{ product.get_absolute_url }}">{{product.final_numerical_rating}}
+                      href="{{ ipcr.get_absolute_url }}">{{ipcr.final_numerical_rating}}
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
                         <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
                       </svg>

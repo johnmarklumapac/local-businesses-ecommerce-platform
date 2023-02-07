@@ -48,7 +48,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "pasundayag.context_processors.categories",
+                "pasundayag.context_processors.ranks",
                 "basket.context_processors.basket",
             ],
         },

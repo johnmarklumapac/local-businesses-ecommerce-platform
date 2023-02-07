@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from pasundayag.models import Product, Rank
+from pasundayag.models import IPCR, Rank
 
 
 class TestPasundayagModel(TestCase):
@@ -26,11 +26,11 @@ class TestPasundayagModel(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class TestProductsModel(TestCase):
+class TestIPCRsModel(TestCase):
     def setUp(self):
         Rank.objects.create(name="django", slug="django")
         User.objects.create(username="admin")
-        self.data1 = Product.objects.create(
+        self.data1 = IPCR.objects.create(
             rank_id=1,
             title="django beginners",
             created_by_id=1,
@@ -38,7 +38,7 @@ class TestProductsModel(TestCase):
             price="20.00",
             image="django",
         )
-        self.data2 = Product.products.create(
+        self.data2 = IPCR.ipcrs.create(
             rank_id=1,
             title="django advanced",
             created_by_id=1,
@@ -48,27 +48,27 @@ class TestProductsModel(TestCase):
             is_active=False,
         )
 
-    def test_products_model_entry(self):
+    def test_ipcrs_model_entry(self):
         """
-        Test product model data insertion/types/field attributes
+        Test ipcr model data insertion/types/field attributes
         """
         data = self.data1
-        self.assertTrue(isinstance(data, Product))
+        self.assertTrue(isinstance(data, IPCR))
         self.assertEqual(str(data), "django beginners")
 
-    def test_products_url(self):
+    def test_ipcrs_url(self):
         """
-        Test product model slug and URL reverse
+        Test ipcr model slug and URL reverse
         """
         data = self.data1
-        url = reverse("pasundayag:product_detail", args=[data.slug])
+        url = reverse("pasundayag:ipcr_detail", args=[data.slug])
         self.assertEqual(url, "/django-beginners")
-        response = self.client.post(reverse("pasundayag:product_detail", args=[data.slug]))
+        response = self.client.post(reverse("pasundayag:ipcr_detail", args=[data.slug]))
         self.assertEqual(response.status_code, 200)
 
-    def test_products_custom_manager_basic(self):
+    def test_ipcrs_custom_manager_basic(self):
         """
-        Test product model custom manager returns only active products
+        Test ipcr model custom manager returns only active ipcrs
         """
-        data = Product.products.all()
+        data = IPCR.ipcrs.all()
         self.assertEqual(data.count(), 1)
