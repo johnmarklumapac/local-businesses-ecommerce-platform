@@ -122,6 +122,9 @@ class IPCR(models.Model):
     stra_a2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
     stra_a3 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
     stra_total = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
+    stra_adjectival_rating = models.CharField(
+        verbose_name=_("Strategic Function Adjectival Rating"), max_length=255, default="Poor"
+    )
     core_q1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
     core_q2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
     core_q3 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
@@ -163,6 +166,10 @@ class IPCR(models.Model):
     core_a19 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
     core_total1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
     core_total2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
+    core_total = models.DecimalField(max_digits=3, decimal_places=2, default=0.0000)
+    core_adjectival_rating = models.CharField(
+        verbose_name=_("Core Function Adjectival Rating"), max_length=255, default="Poor"
+    )
     supp_e1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
     supp_e2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
     supp_e3 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
@@ -176,6 +183,9 @@ class IPCR(models.Model):
     supp_a5 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
     supp_a6 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
     supp_total = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
+    supp_adjectival_rating = models.CharField(
+        verbose_name=_("Support Function Adjectival Rating"), max_length=255, default="Poor"
+    )
     final_numerical_rating = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
     final_adjectival_rating = models.CharField(
         verbose_name=_("Final Adjectival Rating"), max_length=255, default="Poor"
@@ -188,6 +198,127 @@ class IPCR(models.Model):
 
     def get_absolute_url(self):
         return reverse("pasundayag:ipcr_detail", args=[self.slug])
+
+    def calculate_stra_total(self):
+        self.stra_total = (self.stra_a1 + self.stra_a2 + self.stra_a3) / 3
+        self.save()
+
+    def calculate_core_total(self):
+        core_total = (
+            self.core_a1
+            + self.core_a2
+            + self.core_a3
+            + self.core_a4
+            + self.core_a5
+            + self.core_a6
+            + self.core_a7
+            + self.core_a8
+            + self.core_a9
+            + self.core_a10
+            + self.core_a11
+            + self.core_a12
+            + self.core_a13
+            + self.core_a14
+            + self.core_a15
+            + self.core_a16
+            + self.core_a17
+            + self.core_a18
+            + self.core_a19
+        ) / 19
+        self.core_total = round(core_total, 4)
+        self.save()
+
+    def calculate_supp_total(self):
+        supp_total = (self.supp_a1 + self.supp_a2 + self.supp_a3 + self.supp_a4 + self.supp_a5 + self.supp_a6) / 6
+        self.supp_total = round(supp_total, 4)
+        self.save()
+
+    def calculate_final_numerical_rating(self):
+        final_numerical_rating = (
+            self.stra_a1
+            + self.stra_a2
+            + self.stra_a3
+            + self.core_a1
+            + self.core_a2
+            + self.core_a3
+            + self.core_a4
+            + self.core_a5
+            + self.core_a6
+            + self.core_a7
+            + self.core_a8
+            + self.core_a9
+            + self.core_a10
+            + self.core_a11
+            + self.core_a12
+            + self.core_a13
+            + self.core_a14
+            + self.core_a15
+            + self.core_a16
+            + self.core_a17
+            + self.core_a18
+            + self.core_a19
+            + self.supp_a1
+            + self.supp_a2
+            + self.supp_a3
+            + self.supp_a4
+            + self.supp_a5
+            + self.supp_a6
+        ) / 27
+
+        self.final_numerical_rating = round(final_numerical_rating, 4)
+        self.save()
+
+    def stra_save(self, *args, **kwargs):
+        if self.stra_total >= 5:
+            self.stra_adjectival_rating = "Outstanding"
+        elif self.stra_total >= 4:
+            self.stra_adjectival_rating = "Very Satisfactory"
+        elif self.stra_total >= 3:
+            self.stra_adjectival_rating = "Satisfactory"
+        elif self.stra_total >= 2:
+            self.stra_adjectival_rating = "Unsatisfactory"
+        else:
+            self.stra_adjectival_rating = "Very Unsatisfactory"
+        super().save(*args, **kwargs)
+
+    def core_save(self, *args, **kwargs):
+        if self.core_total >= 5:
+            self.core_adjectival_rating = "Outstanding"
+        elif self.core_total >= 4:
+            self.core_adjectival_rating = "Very Satisfactory"
+        elif self.core_total >= 3:
+            self.core_adjectival_rating = "Satisfactory"
+        elif self.core_total >= 2:
+            self.core_adjectival_rating = "Unsatisfactory"
+        else:
+            self.core_adjectival_rating = "Very Unsatisfactory"
+        super().save(*args, **kwargs)
+
+    def supp_save(self, *args, **kwargs):
+        if self.supp_total >= 5:
+            self.supp_adjectival_rating = "Outstanding"
+        elif self.supp_total >= 4:
+            self.supp_adjectival_rating = "Very Satisfactory"
+        elif self.supp_total >= 3:
+            self.supp_adjectival_rating = "Satisfactory"
+        elif self.supp_total >= 2:
+            self.supp_adjectival_rating = "Unsatisfactory"
+        else:
+            self.core_adjectival_rating = "Very Unsatisfactory"
+        super().save(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        if self.final_numerical_rating >= 5:
+            self.final_adjectival_rating = "Outstanding"
+        elif self.final_numerical_rating >= 4:
+            self.final_adjectival_rating = "Very Satisfactory"
+        elif self.final_numerical_rating >= 3:
+            self.final_adjectival_rating = "Satisfactory"
+        elif self.final_numerical_rating >= 2:
+            self.final_adjectival_rating = "Unsatisfactory"
+        else:
+            self.final_adjectival_rating = "Very Unsatisfactory"
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
