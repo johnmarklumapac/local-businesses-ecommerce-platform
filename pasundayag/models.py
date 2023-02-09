@@ -84,28 +84,7 @@ class IPCR(models.Model):
     )
     description = models.TextField(verbose_name=_("description"), help_text=_("Not Required"), blank=True)
     slug = models.SlugField(max_length=255)
-    regular_price = models.DecimalField(
-        verbose_name=_("Regular price"),
-        help_text=_("Maximum 99999.99"),
-        error_messages={
-            "name": {
-                "max_length": _("The price must be between 0 and 99999.99."),
-            },
-        },
-        max_digits=7,
-        decimal_places=2,
-    )
-    discount_price = models.DecimalField(
-        verbose_name=_("Discount price"),
-        help_text=_("Maximum 99999.99"),
-        error_messages={
-            "name": {
-                "max_length": _("The price must be between 0 and 99999.99."),
-            },
-        },
-        max_digits=5,
-        decimal_places=2,
-    )
+
     is_active = models.BooleanField(
         verbose_name=_("IPCR visibility"),
         help_text=_("Change ipcr visibility"),
@@ -113,80 +92,79 @@ class IPCR(models.Model):
     )
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
-    users_wishlist = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="user_wishlist", blank=True)
 
-    stra_e1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    stra_e2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    stra_e3 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    stra_a1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    stra_a2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    stra_a3 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    stra_total = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
+    stra_e1 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    stra_e2 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    stra_e3 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    stra_a1 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    stra_a2 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    stra_a3 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    stra_total = models.DecimalField(max_digits=5, decimal_places=4, null=True)
     stra_adjectival_rating = models.CharField(
         verbose_name=_("Strategic Function Adjectival Rating"), max_length=255, default="Poor"
     )
-    core_q1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_q2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_q3 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_q4 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e3 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e4 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e5 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e6 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e7 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e8 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e9 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e10 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e11 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e12 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e13 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e14 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_e15 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_t1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a3 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a4 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a5 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a6 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a7 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a8 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a9 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a10 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a11 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a12 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a13 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a14 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a15 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a16 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a17 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a18 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_a19 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_total1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_total2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    core_total = models.DecimalField(max_digits=3, decimal_places=2, default=0.0000)
+    core_q1 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_q2 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_q3 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_q4 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e1 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e2 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e3 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e4 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e5 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e6 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e7 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e8 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e9 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e10 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e11 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e12 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e13 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e14 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_e15 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_t1 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a1 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a2 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a3 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a4 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a5 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a6 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a7 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a8 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a9 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a10 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a11 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a12 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a13 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a14 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a15 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a16 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a17 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a18 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_a19 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_total1 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_total2 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    core_total = models.DecimalField(max_digits=3, decimal_places=2, null=True)
     core_adjectival_rating = models.CharField(
         verbose_name=_("Core Function Adjectival Rating"), max_length=255, default="Poor"
     )
-    supp_e1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_e2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_e3 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_e4 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_e5 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_t1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_a1 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_a2 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_a3 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_a4 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_a5 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_a6 = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
-    supp_total = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
+    supp_e1 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_e2 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_e3 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_e4 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_e5 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_t1 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_a1 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_a2 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_a3 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_a4 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_a5 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_a6 = models.DecimalField(max_digits=5, decimal_places=4, null=True)
+    supp_total = models.DecimalField(max_digits=5, decimal_places=4, null=True)
     supp_adjectival_rating = models.CharField(
         verbose_name=_("Support Function Adjectival Rating"), max_length=255, default="Poor"
     )
-    final_numerical_rating = models.DecimalField(max_digits=5, decimal_places=4, default=0.0000)
+    final_numerical_rating = models.DecimalField(max_digits=5, decimal_places=4, null=True)
     final_adjectival_rating = models.CharField(
         verbose_name=_("Final Adjectival Rating"), max_length=255, default="Poor"
     )

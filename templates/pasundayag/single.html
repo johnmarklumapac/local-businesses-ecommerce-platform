@@ -6,599 +6,540 @@
 {% endblock %}
 {% block content %}
 
-{% comment %} <div class="container">
-  {% if messages %}
-  <div class="alert alert-warning" alert-{{ message.tags }}" role="alert">
-    {% for message in messages %}
-    {{message|safe}} - <a href="{% url " account:wishlist" %}" class="alert-link">Your Wishlist</a>.
-    {% endfor %}
+<div class="container">
+  <h1 class="h1">IPCR</h1>
+  <div class="row border">
+    <div class="col-3 text-center pt-3 pb-3">
+      {% for image in ipcr.ipcr_image.all %}
+      {% if image.is_feature %}
+      <img class="rounded-circle border" alt="Rounded Image" width="200" height="200" src="{{ image.image.url }}">
+      {% else %}
+      <img src="{{ image.image.url }}" alt="{{ image.image.alt_text }}">
+      {% endif %}
+      {% endfor %}
+    </div>
+    <div class="col-4 pt-5 pl-5 text-start">
+      <h2>{{ ipcr.title }}</h2>
+      <h4>{{ipcr.rank}}</h4>
+      <p>({{ipcr.ipcr_type}})</p>
+    </div>
+    <div class="col-5 text-center pt-4 px-3 border">
+      <div class="h1 text-success">{{ipcr.final_numerical_rating}}</div>
+      <div class="h4 text-success">{{ipcr.final_adjectival_rating}}</div>
+      <p class="text-success">(3.02% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+            <path
+              d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+          </svg></span> than previos IPCR rating)</p>
+      <div class="h3">IPCR final ratings</div>
+    </div>
   </div>
-  {% endif %}
-  <div class="row g-3">
-    <div class="col-md-5 ps-3 col-lg-5 order-md-last p-0 order-1">
-      <div class="d-grid gap-2">
-        <div class="d-flex d-flex-inline justify-content-between">
-          <div><span class="h3">P{{ ipcr.regular_price }}</span>
-            <p class="text-muted">includes tax</p>
-          </div>
-          <div>
-            <label for="select">Qty</label>
-            <select id="select" class="h6 pasundayag-select-dropdown">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
-          </div>
-        </div>
-        <hr>
-        <button type="button" id="add-button" value="{{ipcr.id}}" class="btn btn-success fw500">Add to
-          basket</button>
-        <a href="{% url " account:user_wishlist" ipcr.id %}" class="btn btn-light fw500" role="button"
-          aria-disabled="true">Add to Wish List</a>
+
+  <div class="row border">
+    <div class="col-4 text-center border pt-3">
+      <div class="h3 text-success">{{ipcr.stra_total}}</div>
+      <div class="h6 text-success">{{ipcr.stra_adjectival_rating}}</div>
+      <p class="text-success">(0.00% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+            <path
+              d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+          </svg></span> than previos IPCR rating)</p>
+      <div class="h4">Strategic functions</div>
+    </div>
+    <div class="col-4 text-center border-bottom-0  pt-3">
+      <div class="h3 text-success">{{ipcr.core_total}}</div>
+      <div class="h6 text-success">{{ipcr.core_adjectival_rating}}</div>
+      <p class="text-success">(0.00% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+            <path
+              d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+          </svg></span> than previos IPCR rating)</p>
+      <div class="h4">Core functions</div>
+    </div>
+    <div class="col-4 text-center border pt-3">
+      <div class="h3 text-success text-danger">{{ipcr.supp_total}}</div>
+      <div class="h6 text-success text-danger">{{ipcr.supp_adjectival_rating}}</div>
+      <p class="text-danger">(0.00% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+            <path
+              d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+          </svg></span> than previos IPCR rating)</p>
+      <div class="h4">Support functions </div>
+    </div>
+  </div>
+
+  <div class="row py-5">
+    <div class="input-group">
+      <select class="custom-select" id="inputGroupSelect04">
+        <option value="1">2022</option>
+        <option value="2">2021</option>
+        <option value="3">2020</option>
+        <option value="3">2019</option>
+        <option value="3">2018</option>
+        <option value="3">2017</option>
+        <option value="3">2016</option>
+      </select>
+      <div class="form-check form-check-inline mx-3 mt-2">
+        <input class="form-check-input pt-3" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+        <label class="form-check-label" for="inlineRadio1">1st quarter</label>
+      </div>
+      <div class="form-check form-check-inline mt-2">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+        <label class="form-check-label" for="inlineRadio1">2nd quarter</label>
+      </div>
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button">Display</button>
       </div>
     </div>
-    <div class="col-md-7 col-lg-7 p-0">
-      <div class="card mb-3 border-0">
-        <div class="row g-0">
-          <div class="col-md-12">
-            <div class="card-body p-1">
-              <h1 class="mb-0 h2 pe-4 pb-4">{{ ipcr.title }}</h1>
-              <div class="bg-light">
+  </div>
 
-                {% for image in ipcr.ipcr_image.all %}
-                {% if image.is_feature %}
-                <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image" src="{{ image.image.url }}"
-                  alt="{{ image.image.alt_text }}">
-                {% else %}
-                <img class="img-fluid d-block-inline pt-3" width="100px" alt="Responsive image"
-                  src="{{ image.image.url }}" alt="{{ image.image.alt_text }}">
-                {% endif %}
-                {% endfor %}
+  <table data-toggle="table">
+    <thead>
+      <tr>
+        <th>MFO/PAP</th>
+        <th>SUCCESS INDICATORS (Targets + Measures) </th>
+        <th>Actual Accomplishments</th>
+        <th>Q</th>
+        <th>E</th>
+        <th>T</th>
+        <th>A</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="fw-bold">1 Strategic Functions (30%)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1 Percentage of graduates (2 years prior) that areem lo ed </td>
+        <td>60% of graduates (2 years prior) that are employed) </td>
+        <td>35% were employed</td>
+        <td></td>
+        <td>{{ipcr.stra_e1}}</td>
+        <td></td>
+        <td>{{ipcr.stra_a1}}</td>
+        <td>2nd semester, AY 2019-2020</td>
+      </tr>
+      <tr>
+        <td>1.2 Percentage of undergraduate student population enrolled in CHED-ldentlfied and RDC-ldentifled priority
+          programs.</td>
+        <td>50% of undergraduate student population enrolled in CHED­identified and RDC-identified priority programs
+        </td>
+        <td>100% of the undergraduate student population enrolled In CHED-identlfied and RDC­ldentifled priority
+        </td>
+        <td></td>
+        <td>{{ipcr.stra_e2}}</td>
+        <td></td>
+        <td>{{ipcr.stra_a2}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3 Percentage of graduate students enrolled in research degree programs</td>
+        <td>60% of graduate students enrolled in research degree programs </td>
+        <td>100% -- part of the MSIT curriculum Is MSIT 199 (Thesis) </td>
+        <td></td>
+        <td>{{ipcr.stra_e3}}</td>
+        <td></td>
+        <td>{{ipcr.stra_a3}}</td>
+        <td>2nd semester, AY 2019-2020</td>
+      </tr>
+      <tr>
+        <td class="fw-bold">2 CORE FUNCTIONS (60%) </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1 Academic </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2 .1.1 Presentation of the course syllabus </td>
+        <td>Presented/discussed the course syllabus for all subject load assignments </td>
+        <td>2/2 presented </td>
+        <td></td>
+        <td>{{ipcr.core_e1}}</td>
+        <td></td>
+        <td>{{ipcr.core_a1}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1.2 Prepares Learning Materials </td>
+        <td>No. of teaching learning activities (TLAs) conducted incorporating the
+          21st century skills (6 C's: Character, Citizenship, Collaboration, Communication, Creativity, Critical
+          Thinking)
+          (Target: 60% of the total teaching load)</td>
+        <td>Conducted 4 TLAs </td>
+        <td></td>
+        <td>{{ipcr.core_e2}}</td>
+        <td></td>
+        <td>{{ipcr.core_a2}}</td>
+        <td>Le cture, Guided Exercise,
+          Re adlng Assignment, Oral
+          Recitation </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>No. of learning materials relevant to the subject matter
+          incorporating the 21st century skills (6 C's: Character, Citizenship, Collaboration, Communication,
+          Creativity, Critical Thinking)
+          (Target: 60% of the total teaching load) </td>
+        <td>6 learning materials </td>
+        <td></td>
+        <td>{{ipcr.core_e3}}</td>
+        <td></td>
+        <td>{{ipcr.core_a3}}</td>
+        <td> reference books; 2 sites; 6 learning materials (design, SQL, View, Pasundayagd Proc,
+          Triggers, and Data Migration)</td>
+      </tr>
+      <tr>
+        <td>2 .1. 3 Monitoring students' learning progress and achievement of learning outcomes </td>
+        <td>No. of assessment processes conducted (2 per subject) </td>
+        <td>9 assesments conducted </td>
+        <td></td>
+        <td>{{ipcr.core_e4}}</td>
+        <td></td>
+        <td>{{ipcr.core_a4}}</td>
+        <td>3 Written Exercises, 4 Practical Exercises, Project, Exam</td>
+      </tr>
+      <tr>
+        <td>2 .1.4 PES Students' Rating </td>
+        <td>[23, 25) 5 </td>
+        <td></td>
+        <td></td>
+        <td>{{ipcr.core_q1}}</td>
+        <td></td>
+        <td>{{ipcr.core_a5}}</td>
+        <td>2nd Semester, AY 2019-2020</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>[22, 23) 4 </td>
+        <td>22.677 </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>[20, 22) : 3 </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>[19, 20) 2 </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Below 19 : 1 </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>No. of thesis / dissertation advisees who defended on time
+          Target: Number of Students enrolled in thesis (Individual or by
+          group) divided by the No. of faculty members In the Program </td>
+        <td>5 out of 5 </td>
+        <td></td>
+        <td></td>
+        <td>{{ipcr.core_e6}}</td>
+        <td>{{ipcr.core_t1}}</td>
+        <td>{{ipcr.core_a6}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="fw-bold">2.2 Improving Research IPCRivity </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.2.1 Publishes papers from completed research In reputable or high-Impact journals </td>
+        <td># of published research papers (within 3 years) </td>
+        <td>Not mandatory for Instructor-Assistant Professor Rank </td>
+        <td>{{ipcr.core_e7}}</td>
+        <td></td>
+        <td>{{ipcr.core_e7}}</td>
+        <td>{{ipcr.core_a7}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.2.2 Presents papers from completed research </td>
+        <td># of presented research papers </td>
+        <td>Not mandatory for Instructor-Assistant Professor Rank</td>
+        <td></td>
+        <td>{{ipcr.core_e8}}</td>
+        <td></td>
+        <td>{{ipcr.core_a8}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.2.3 Submits Inventions/Innovations for patenting</td>
+        <td># of research outputs for patenting (within 3 years) </td>
+        <td>Not Applicable </td>
+        <td></td>
+        <td>{{ipcr.core_e9}}</td>
+        <td></td>
+        <td>{{ipcr.core_a9}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.2.3 Generates research funding </td>
+        <td>Amount of research funding generated </td>
+        <td>Not mandatory for instructor-Assistant</td>
+        <td></td>
+        <td>{{ipcr.core_e10}}</td>
+        <td></td>
+        <td>{{ipcr.core_a10}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.2.4 Implements R&D projects/programs </td>
+        <td># of R&D projects Implemented as Lead Implementer or co-implementor </td>
+        <td>Not mandatory for Instructor-Asslstant</td>
+        <td></td>
+        <td>{{ipcr.core_e11}}</td>
+        <td></td>
+        <td>{{ipcr.core_a11}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.2.5 Submitted paper was cited or utilized </td>
+        <td># of papers cited or utilized (within 5 years) </td>
+        <td>Not mandatory for Instructor-Assista</td>
+        <td></td>
+        <td>{{ipcr.core_e12}}</td>
+        <td></td>
+        <td>{{ipcr.core_a12}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="fw-bold">2.3 Technical Advisory /Extension </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.3.1 Provides training to clients to equip with technical know-how </td>
+        <td># of clients provided with training </td>
+        <td>10+ clients trained/facilitated </td>
+        <td></td>
+        <td>{{ipcr.core_e13}}</td>
+        <td></td>
+        <td>{{ipcr.core_a13}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.3.2 Provides advisory services/technology transfer to Identified cllentele. </td>
+        <td>2.3.2 Provides advisory services/technology transfer to Identified cllentele. </td>
+        <td>5 clients provided with technical advisory </td>
+        <td></td>
+        <td>{{ipcr.core_e14}}</td>
+        <td></td>
+        <td>{{ipcr.core_a14}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.3.3 Packages extension project/program proposal aligned with the priority agenda of the government for
+          funding </td>
+        <td># of extension projects/programs for implementation </td>
+        <td>- BFAR.AQUAR
+          - ANHS-Extension
+          - DSWD-Extenslon</td>
+        <td></td>
+        <td>{{ipcr.core_e15}}</td>
+        <td></td>
+        <td>{{ipcr.core_a15}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.3.4 Extension training program evaluation implemented</td>
+        <td>% of trainees evaluating the training course as good or better</td>
+        <td>80% of trainees evaluating the training course as good or better </td>
+        <td>{{ipcr.core_q2}}</td>
+        <td></td>
+        <td></td>
+        <td>{{ipcr.core_a16}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>% of the trainees evaluated the technical advisory services received as good or better </td>
+        <td>100% evaluated the technical advisory services received as good or better</td>
+        <td>{{ipcr.core_q3}}</td>
+        <td></td>
+        <td></td>
+        <td>{{ipcr.core_a17}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.3.5 Conducts follow-up on the status of the training provided for
+          the utilization of the technologies for viable enterprise </td>
+        <td>% of trainees who utilized thE! technologies for viable enterprise </td>
+        <td>Not Applicable </td>
+        <td></td>
+        <td>{{ipcr.core_e16}}</td>
+        <td></td>
+        <td>{{ipcr.core_a18}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.3.6 Generates Funding for the Extension Services </td>
+        <td>Amount of Funding generated for extension services </td>
+        <td>P 36,000.00 </td>
+        <td>{{ipcr.core_q4}}</td>
+        <td></td>
+        <td></td>
+        <td>{{ipcr.core_a19}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="fw-bold">SUPPORT FUNTIONS (10%)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="fw-bold">3.1 Involvement during enrollment</td>
+        <td>No. of tasks assigned during enrollment </td>
+        <td>2 Task assigned during enrollment</td>
+        <td></td>
+        <td>{{ipcr.supp_e1}}</td>
+        <td></td>
+        <td>{{ipcr.supp_a1}}</td>
+        <td>Task Force and MIS related functions</td>
+      </tr>
+      <tr>
+        <td>3.2 Faculty Development </td>
+        <td>No. of seminars / trainings/ conference attended </td>
+        <td>2 trainings attended [Coursera)</td>
+        <td></td>
+        <td>{{ipcr.supp_e2}}</td>
+        <td></td>
+        <td>{{ipcr.supp_a2}}</td>
+        <td>Coursera </td>
+      </tr>
+      <tr>
+        <td>3.3 Participation /attendance to functions/ activities </td>
+        <td>No. of activities or functions attended </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>3.3.1 Department </td>
+        <td></td>
+        <td>100% attendance </td>
+        <td></td>
+        <td>{{ipcr.supp_e3}}</td>
+        <td></td>
+        <td>{{ipcr.supp_a3}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>3.3.2 College </td>
+        <td></td>
+        <td>100% attendance </td>
+        <td></td>
+        <td>{{ipcr.supp_e4}}</td>
+        <td></td>
+        <td>{{ipcr.supp_a4}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>3.3.3 University </td>
+        <td></td>
+        <td>100% attendance </td>
+        <td></td>
+        <td>{{ipcr.supp_e5}}</td>
+        <td></td>
+        <td>{{ipcr.supp_a5}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>3.4 Submission of the required reports or documents to superviso</td>
+        <td>No. of reports submitted </td>
+        <td>No. of reports submitted </td>
+        <td></td>
+        <td></td>
+        <td>{{ipcr.supp_t1}}</td>
+        <td>{{ipcr.supp_a6}}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> {% endcomment %}
+  <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+
+  <script>
+    $(document).on('click', '#add-button', function (e) {
+      e.preventDefault();
+      $.ajax({
+        type: 'POST',
+        url: '{% url "basket:basket_add" %}',
+        data: {
+          ipcrid: $('#add-button').val(),
+          ipcrqty: $('#select option:selected').text(),
+          csrfmiddlewaretoken: "{{csrf_token}}",
+          action: 'post'
+        },
+        success: function (json) {
+          document.getElementById("basket-qty").innerHTML = json.qty
+        },
+        error: function (xhr, errmsg, err) { }
+      });
+    })
+  </script>
 
 
-  <div class="container">
-    <h1 class="h1">IPCR</h1>
-    <div class="row border">
-      <div class="col-3 text-center pt-3 pb-3">
-        {% for image in ipcr.ipcr_image.all %}
-        {% if image.is_feature %}
-        <img class="rounded-circle border" alt="Rounded Image" width="200" height="200" src="{{ image.image.url }}">
-        {% else %}
-        <img src="{{ image.image.url }}" alt="{{ image.image.alt_text }}">
-        {% endif %}
-        {% endfor %}
-      </div>
-      <div class="col-4 pt-5 pl-5 text-start">
-        <h2>{{ ipcr.title }}</h2>
-        <h4>{{ipcr.rank}}</h4>
-        <p>({{ipcr.ipcr_type}})</p>
-      </div>
-      <div class="col-5 text-center pt-4 px-3 border">
-        <div class="h1 text-success">{{ipcr.final_numerical_rating}}</div>
-        <div class="h4 text-success">{{ipcr.final_adjectival_rating}}</div>
-        <p class="text-success">(3.02% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-              fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-              <path
-                d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-            </svg></span> than previos IPCR rating)</p>
-        <div class="h3">IPCR final ratings</div>
-      </div>
-    </div>
 
-    <div class="row border">
-      <div class="col-4 text-center border pt-3">
-        <div class="h3 text-success">{{ipcr.stra_total}}</div>
-        <div class="h6 text-success">{{ipcr.stra_adjectival_rating}}</div>
-        <p class="text-success">(0.00% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-              fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-              <path
-                d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-            </svg></span> than previos IPCR rating)</p>
-        <div class="h4">Strategic functions</div>
-      </div>
-      <div class="col-4 text-center border-bottom-0  pt-3">
-        <div class="h3 text-success">{{ipcr.core_total}}</div>
-        <div class="h6 text-success">{{ipcr.core_adjectival_rating}}</div>
-        <p class="text-success">(0.00% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-              fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-              <path
-                d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-            </svg></span> than previos IPCR rating)</p>
-        <div class="h4">Core functions</div>
-      </div>
-      <div class="col-4 text-center border pt-3">
-        <div class="h3 text-success text-danger">{{ipcr.supp_total}}</div>
-        <div class="h6 text-success text-danger">{{ipcr.supp_adjectival_rating}}</div>
-        <p class="text-danger">(0.00% <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-              fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-              <path
-                d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-            </svg></span> than previos IPCR rating)</p>
-        <div class="h4">Support functions </div>
-      </div>
-    </div>
-
-    <div class="row py-5">
-      <div class="input-group">
-        <select class="custom-select" id="inputGroupSelect04">
-          <option value="1">2022</option>
-          <option value="2">2021</option>
-          <option value="3">2020</option>
-          <option value="3">2019</option>
-          <option value="3">2018</option>
-          <option value="3">2017</option>
-          <option value="3">2016</option>
-        </select>
-        <div class="form-check form-check-inline mx-3 mt-2">
-          <input class="form-check-input pt-3" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-          <label class="form-check-label" for="inlineRadio1">1st quarter</label>
-        </div>
-        <div class="form-check form-check-inline mt-2">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-          <label class="form-check-label" for="inlineRadio1">2nd quarter</label>
-        </div>
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button">Display</button>
-        </div>
-      </div>
-    </div>
-
-    <table data-toggle="table">
-      <thead>
-        <tr>
-          <th>MFO/PAP</th>
-          <th>SUCCESS INDICATORS (Targets + Measures) </th>
-          <th>Actual Accomplishments</th>
-          <th>Q</th>
-          <th>E</th>
-          <th>T</th>
-          <th>A</th>
-          <th>Remarks</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="fw-bold">1 Strategic Functions (30%)</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>1.1 Percentage of graduates (2 years prior) that areem lo ed </td>
-          <td>60% of graduates (2 years prior) that are employed) </td>
-          <td>35% were employed</td>
-          <td></td>
-          <td>{{ipcr.stra_e1}}</td>
-          <td></td>
-          <td>{{ipcr.stra_a1}}</td>
-          <td>2nd semester, AY 2019-2020</td>
-        </tr>
-        <tr>
-          <td>1.2 Percentage of undergraduate student population enrolled in CHED-ldentlfied and RDC-ldentifled priority
-            programs.</td>
-          <td>50% of undergraduate student population enrolled in CHED­identified and RDC-identified priority programs
-          </td>
-          <td>100% of the undergraduate student population enrolled In CHED-identlfied and RDC­ldentifled priority
-          </td>
-          <td></td>
-          <td>{{ipcr.stra_e2}}</td>
-          <td></td>
-          <td>{{ipcr.stra_a2}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>1.3 Percentage of graduate students enrolled in research degree programs</td>
-          <td>60% of graduate students enrolled in research degree programs </td>
-          <td>100% -- part of the MSIT curriculum Is MSIT 199 (Thesis) </td>
-          <td></td>
-          <td>{{ipcr.stra_e3}}</td>
-          <td></td>
-          <td>{{ipcr.stra_a3}}</td>
-          <td>2nd semester, AY 2019-2020</td>
-        </tr>
-        <tr>
-          <td class="fw-bold">2 CORE FUNCTIONS (60%) </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.1 Academic </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2 .1.1 Presentation of the course syllabus </td>
-          <td>Presented/discussed the course syllabus for all subject load assignments </td>
-          <td>2/2 presented </td>
-          <td></td>
-          <td>{{ipcr.core_e1}}</td>
-          <td></td>
-          <td>{{ipcr.core_a1}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.1.2 Prepares Learning Materials </td>
-          <td>No. of teaching learning activities (TLAs) conducted incorporating the
-            21st century skills (6 C's: Character, Citizenship, Collaboration, Communication, Creativity, Critical
-            Thinking)
-            (Target: 60% of the total teaching load)</td>
-          <td>Conducted 4 TLAs </td>
-          <td></td>
-          <td>{{ipcr.core_e2}}</td>
-          <td></td>
-          <td>{{ipcr.core_a2}}</td>
-          <td>Le cture, Guided Exercise,
-            Re adlng Assignment, Oral
-            Recitation </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>No. of learning materials relevant to the subject matter
-            incorporating the 21st century skills (6 C's: Character, Citizenship, Collaboration, Communication,
-            Creativity, Critical Thinking)
-            (Target: 60% of the total teaching load) </td>
-          <td>6 learning materials </td>
-          <td></td>
-          <td>{{ipcr.core_e3}}</td>
-          <td></td>
-          <td>{{ipcr.core_a3}}</td>
-          <td> reference books; 2 sites; 6 learning materials (design, SQL, View, Pasundayagd Proc,
-            Triggers, and Data Migration)</td>
-        </tr>
-        <tr>
-          <td>2 .1. 3 Monitoring students' learning progress and achievement of learning outcomes </td>
-          <td>No. of assessment processes conducted (2 per subject) </td>
-          <td>9 assesments conducted </td>
-          <td></td>
-          <td>{{ipcr.core_e4}}</td>
-          <td></td>
-          <td>{{ipcr.core_a4}}</td>
-          <td>3 Written Exercises, 4 Practical Exercises, Project, Exam</td>
-        </tr>
-        <tr>
-          <td>2 .1.4 PES Students' Rating </td>
-          <td>[23, 25) 5 </td>
-          <td></td>
-          <td></td>
-          <td>{{ipcr.core_q1}}</td>
-          <td></td>
-          <td>{{ipcr.core_a5}}</td>
-          <td>2nd Semester, AY 2019-2020</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>[22, 23) 4 </td>
-          <td>22.677 </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>[20, 22) : 3 </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>[19, 20) 2 </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>Below 19 : 1 </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>No. of thesis / dissertation advisees who defended on time
-            Target: Number of Students enrolled in thesis (Individual or by
-            group) divided by the No. of faculty members In the Program </td>
-          <td>5 out of 5 </td>
-          <td></td>
-          <td></td>
-          <td>{{ipcr.core_e6}}</td>
-          <td>{{ipcr.core_t1}}</td>
-          <td>{{ipcr.core_a6}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="fw-bold">2.2 Improving Research IPCRivity </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.2.1 Publishes papers from completed research In reputable or high-Impact journals </td>
-          <td># of published research papers (within 3 years) </td>
-          <td>Not mandatory for Instructor-Assistant Professor Rank </td>
-          <td>{{ipcr.core_e7}}</td>
-          <td></td>
-          <td>{{ipcr.core_e7}}</td>
-          <td>{{ipcr.core_a7}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.2.2 Presents papers from completed research </td>
-          <td># of presented research papers </td>
-          <td>Not mandatory for Instructor-Assistant Professor Rank</td>
-          <td></td>
-          <td>{{ipcr.core_e8}}</td>
-          <td></td>
-          <td>{{ipcr.core_a8}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.2.3 Submits Inventions/Innovations for patenting</td>
-          <td># of research outputs for patenting (within 3 years) </td>
-          <td>Not Applicable </td>
-          <td></td>
-          <td>{{ipcr.core_e9}}</td>
-          <td></td>
-          <td>{{ipcr.core_a9}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.2.3 Generates research funding </td>
-          <td>Amount of research funding generated </td>
-          <td>Not mandatory for instructor-Assistant</td>
-          <td></td>
-          <td>{{ipcr.core_e10}}</td>
-          <td></td>
-          <td>{{ipcr.core_a10}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.2.4 Implements R&D projects/programs </td>
-          <td># of R&D projects Implemented as Lead Implementer or co-implementor </td>
-          <td>Not mandatory for Instructor-Asslstant</td>
-          <td></td>
-          <td>{{ipcr.core_e11}}</td>
-          <td></td>
-          <td>{{ipcr.core_a11}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.2.5 Submitted paper was cited or utilized </td>
-          <td># of papers cited or utilized (within 5 years) </td>
-          <td>Not mandatory for Instructor-Assista</td>
-          <td></td>
-          <td>{{ipcr.core_e12}}</td>
-          <td></td>
-          <td>{{ipcr.core_a12}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="fw-bold">2.3 Technical Advisory /Extension </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.3.1 Provides training to clients to equip with technical know-how </td>
-          <td># of clients provided with training </td>
-          <td>10+ clients trained/facilitated </td>
-          <td></td>
-          <td>{{ipcr.core_e13}}</td>
-          <td></td>
-          <td>{{ipcr.core_a13}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.3.2 Provides advisory services/technology transfer to Identified cllentele. </td>
-          <td>2.3.2 Provides advisory services/technology transfer to Identified cllentele. </td>
-          <td>5 clients provided with technical advisory </td>
-          <td></td>
-          <td>{{ipcr.core_e14}}</td>
-          <td></td>
-          <td>{{ipcr.core_a14}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.3.3 Packages extension project/program proposal aligned with the priority agenda of the government for
-            funding </td>
-          <td># of extension projects/programs for implementation </td>
-          <td>- BFAR.AQUAR
-            - ANHS-Extension
-            - DSWD-Extenslon</td>
-          <td></td>
-          <td>{{ipcr.core_e15}}</td>
-          <td></td>
-          <td>{{ipcr.core_a15}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.3.4 Extension training program evaluation implemented</td>
-          <td>% of trainees evaluating the training course as good or better</td>
-          <td>80% of trainees evaluating the training course as good or better </td>
-          <td>{{ipcr.core_q2}}</td>
-          <td></td>
-          <td></td>
-          <td>{{ipcr.core_a16}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>% of the trainees evaluated the technical advisory services received as good or better </td>
-          <td>100% evaluated the technical advisory services received as good or better</td>
-          <td>{{ipcr.core_q3}}</td>
-          <td></td>
-          <td></td>
-          <td>{{ipcr.core_a17}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.3.5 Conducts follow-up on the status of the training provided for
-            the utilization of the technologies for viable enterprise </td>
-          <td>% of trainees who utilized thE! technologies for viable enterprise </td>
-          <td>Not Applicable </td>
-          <td></td>
-          <td>{{ipcr.core_e16}}</td>
-          <td></td>
-          <td>{{ipcr.core_a18}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2.3.6 Generates Funding for the Extension Services </td>
-          <td>Amount of Funding generated for extension services </td>
-          <td>P 36,000.00 </td>
-          <td>{{ipcr.core_q4}}</td>
-          <td></td>
-          <td></td>
-          <td>{{ipcr.core_a19}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="fw-bold">SUPPORT FUNTIONS (10%)</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="fw-bold">3.1 Involvement during enrollment</td>
-          <td>No. of tasks assigned during enrollment </td>
-          <td>2 Task assigned during enrollment</td>
-          <td></td>
-          <td>{{ipcr.supp_e1}}</td>
-          <td></td>
-          <td>{{ipcr.supp_a1}}</td>
-          <td>Task Force and MIS related functions</td>
-        </tr>
-        <tr>
-          <td>3.2 Faculty Development </td>
-          <td>No. of seminars / trainings/ conference attended </td>
-          <td>2 trainings attended [Coursera)</td>
-          <td></td>
-          <td>{{ipcr.supp_e2}}</td>
-          <td></td>
-          <td>{{ipcr.supp_a2}}</td>
-          <td>Coursera </td>
-        </tr>
-        <tr>
-          <td>3.3 Participation /attendance to functions/ activities </td>
-          <td>No. of activities or functions attended </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.3.1 Department </td>
-          <td></td>
-          <td>100% attendance </td>
-          <td></td>
-          <td>{{ipcr.supp_e3}}</td>
-          <td></td>
-          <td>{{ipcr.supp_a3}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.3.2 College </td>
-          <td></td>
-          <td>100% attendance </td>
-          <td></td>
-          <td>{{ipcr.supp_e4}}</td>
-          <td></td>
-          <td>{{ipcr.supp_a4}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.3.3 University </td>
-          <td></td>
-          <td>100% attendance </td>
-          <td></td>
-          <td>{{ipcr.supp_e5}}</td>
-          <td></td>
-          <td>{{ipcr.supp_a5}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.4 Submission of the required reports or documents to superviso</td>
-          <td>No. of reports submitted </td>
-          <td>No. of reports submitted </td>
-          <td></td>
-          <td></td>
-          <td>{{ipcr.supp_t1}}</td>
-          <td>{{ipcr.supp_a6}}</td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
-
-    <script>
-      $(document).on('click', '#add-button', function (e) {
-        e.preventDefault();
-        $.ajax({
-          type: 'POST',
-          url: '{% url "basket:basket_add" %}',
-          data: {
-            ipcrid: $('#add-button').val(),
-            ipcrqty: $('#select option:selected').text(),
-            csrfmiddlewaretoken: "{{csrf_token}}",
-            action: 'post'
-          },
-          success: function (json) {
-            document.getElementById("basket-qty").innerHTML = json.qty
-          },
-          error: function (xhr, errmsg, err) { }
-        });
-      })
-    </script>
-
-    
-
-    {% endblock %}
+  {% endblock %}
