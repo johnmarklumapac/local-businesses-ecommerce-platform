@@ -3,11 +3,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
-<<<<<<< Updated upstream
-=======
 from decimal import Decimal
 from django.forms.models import ModelChoiceField
->>>>>>> Stashed changes
 
 
 class Rank(MPTTModel):
@@ -62,11 +59,7 @@ class IPCRSpecification(models.Model):
     specifiction or features for the Employment Status.
     """
 
-<<<<<<< Updated upstream
-    ipcr_type = models.ForeignKey(IPCRType, on_delete=models.PROTECT)
-=======
     ipcr_type = models.ForeignKey(IPCRType, on_delete=models.PROTECT, verbose_name=_("IPCR Type"))
->>>>>>> Stashed changes
     name = models.CharField(verbose_name=_("Name"), help_text=_("Required"), max_length=255)
 
     class Meta:
@@ -82,11 +75,7 @@ class IPCR(models.Model):
     The IPCR table contining all ipcr items.
     """
 
-<<<<<<< Updated upstream
-    ipcr_type = models.ForeignKey(IPCRType, on_delete=models.PROTECT)
-=======
     ipcr_type = models.ForeignKey(IPCRType, on_delete=models.PROTECT, verbose_name=_("IPCR Type"))
->>>>>>> Stashed changes
     rank = models.ForeignKey(Rank, on_delete=models.PROTECT)
     title = models.CharField(
         verbose_name=_("title"),

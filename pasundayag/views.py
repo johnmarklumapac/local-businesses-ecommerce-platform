@@ -32,11 +32,8 @@ def ipcr_all(request):
 def rank_list(request, rank_slug=None):
     rank = get_object_or_404(Rank, slug=rank_slug)
     ipcrs = IPCR.objects.filter(rank__in=Rank.objects.get(slug=rank_slug).get_descendants(include_self=True))
-<<<<<<< Updated upstream
-    return render(request, "pasundayag/rank.html", {"rank": rank, "ipcrs": ipcrs})
-=======
+    
     return render(request, "pasundayag/ipcr_per_rank.html", {"rank": rank, "ipcrs": ipcrs})
->>>>>>> Stashed changes
 
 
 def ipcr_add(request):
