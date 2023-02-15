@@ -10,6 +10,8 @@ DEBUG = True
 ALLOWED_HOSTS = ["yourdomain.com", "127.0.0.1", "localhost"]
 
 INSTALLED_APPS = [
+    "adminlte3",
+    "adminlte3_theme",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -100,9 +102,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 BASKET_SESSION_ID = "basket"
 
 # Custom user model
-AUTH_USER_MODEL = "account.Customer"
+AUTH_USER_MODEL = "account.Personnel"
 LOGIN_REDIRECT_URL = "/account/dashboard"
 LOGIN_URL = "/account/login/"
 
 # Email setting
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

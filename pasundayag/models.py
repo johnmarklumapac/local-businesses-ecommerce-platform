@@ -4,8 +4,6 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
 
-from account.models import Customer
-
 
 class Rank(MPTTModel):
     """
@@ -59,7 +57,7 @@ class IPCRSpecification(models.Model):
     specifiction or features for the Employment Status.
     """
 
-    ipcr_type = models.ForeignKey(IPCRType, on_delete=models.RESTRICT)
+    ipcr_type = models.ForeignKey(IPCRType, on_delete=models.PROTECT)
     name = models.CharField(verbose_name=_("Name"), help_text=_("Required"), max_length=255)
 
     class Meta:
@@ -75,8 +73,8 @@ class IPCR(models.Model):
     The IPCR table contining all ipcr items.
     """
 
-    ipcr_type = models.ForeignKey(IPCRType, on_delete=models.RESTRICT)
-    rank = models.ForeignKey(Rank, on_delete=models.RESTRICT)
+    ipcr_type = models.ForeignKey(IPCRType, on_delete=models.PROTECT)
+    rank = models.ForeignKey(Rank, on_delete=models.PROTECT)
     title = models.CharField(
         verbose_name=_("title"),
         help_text=_("Required"),
@@ -331,7 +329,7 @@ class IPCRSpecificationValue(models.Model):
     """
 
     ipcr = models.ForeignKey(IPCR, on_delete=models.CASCADE)
-    specification = models.ForeignKey(IPCRSpecification, on_delete=models.RESTRICT)
+    specification = models.ForeignKey(IPCRSpecification, on_delete=models.PROTECT)
     value = models.CharField(
         verbose_name=_("value"),
         help_text=_("IPCR specification value (maximum of 255 words"),

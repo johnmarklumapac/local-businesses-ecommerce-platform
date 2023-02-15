@@ -12,7 +12,6 @@ from django.utils.translation import gettext_lazy as _
 
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, email, name, password, **other_fields):
-
         other_fields.setdefault("is_staff", True)
         other_fields.setdefault("is_superuser", True)
         other_fields.setdefault("is_active", True)
@@ -25,7 +24,6 @@ class CustomAccountManager(BaseUserManager):
         return self.create_user(email, name, password, **other_fields)
 
     def create_user(self, email, name, password, **other_fields):
-
         if not email:
             raise ValueError(_("You must provide an email address"))
 
@@ -36,7 +34,7 @@ class CustomAccountManager(BaseUserManager):
         return user
 
 
-class Customer(AbstractBaseUser, PermissionsMixin):
+class Personnel(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     name = models.CharField(max_length=150)
     mobile = models.CharField(max_length=20, blank=True)
@@ -67,8 +65,8 @@ class Customer(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["name"]
 
     class Meta:
-        verbose_name = "Personel"
-        verbose_name_plural = "Personels"
+        verbose_name = "Personnel"
+        verbose_name_plural = "Personnels"
 
     def email_user(self, subject, message):
         send_mail(
@@ -89,7 +87,7 @@ class Address(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    customer = models.ForeignKey(Customer, verbose_name=_("Customer"), on_delete=models.CASCADE)
+    personnel = models.ForeignKey(Personnel, verbose_name=_("Personnel"), on_delete=models.CASCADE)
     full_name = models.CharField(_("Full Name"), max_length=150)
     phone = models.CharField(_("Phone Number"), max_length=50)
     postcode = models.CharField(_("Postcode"), max_length=50)

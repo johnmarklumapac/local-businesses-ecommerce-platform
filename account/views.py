@@ -6,7 +6,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 from orders.models import Order
@@ -14,7 +13,7 @@ from orders.views import user_orders
 from pasundayag.models import IPCR
 
 from .forms import RegistrationForm, UserAddressForm, UserEditForm
-from .models import Address, Customer
+from .models import Address, Personnel
 from .tokens import account_activation_token
 
 
@@ -57,7 +56,7 @@ def edit_details(request):
 
 @login_required
 def delete_user(request):
-    user = Customer.objects.get(user_name=request.user)
+    user = Personnel.objects.get(user_name=request.user)
     user.is_active = False
     user.save()
     logout(request)
@@ -65,7 +64,6 @@ def delete_user(request):
 
 
 def account_register(request):
-
     if request.user.is_authenticated:
         return redirect("account:dashboard")
 
@@ -98,7 +96,7 @@ def account_register(request):
 def account_activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
-        user = Customer.objects.get(pk=uid)
+        user = Personnel.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, user.DoesNotExist):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
@@ -115,7 +113,7 @@ def account_activate(request, uidb64, token):
 
 @login_required
 def view_address(request):
-    addresses = Address.objects.filter(customer=request.user)
+    addresses = Address.objects.filter(Personnel=request.user)
     return render(request, "account/dashboard/addresses.html", {"addresses": addresses})
 
 
@@ -125,7 +123,7 @@ def add_address(request):
         address_form = UserAddressForm(data=request.POST)
         if address_form.is_valid():
             address_form = address_form.save(commit=False)
-            address_form.customer = request.user
+            address_form.Personnel = request.user
             address_form.save()
             return HttpResponseRedirect(reverse("account:addresses"))
     else:
@@ -136,27 +134,27 @@ def add_address(request):
 @login_required
 def edit_address(request, id):
     if request.method == "POST":
-        address = Address.objects.get(pk=id, customer=request.user)
+        address = Address.objects.get(pk=id, Personnel=request.user)
         address_form = UserAddressForm(instance=address, data=request.POST)
         if address_form.is_valid():
             address_form.save()
             return HttpResponseRedirect(reverse("account:addresses"))
     else:
-        address = Address.objects.get(pk=id, customer=request.user)
+        address = Address.objects.get(pk=id, Personnel=request.user)
         address_form = UserAddressForm(instance=address)
     return render(request, "account/dashboard/edit_addresses.html", {"form": address_form})
 
 
 @login_required
 def delete_address(request, id):
-    address = Address.objects.filter(pk=id, customer=request.user).delete()
+    address = Address.objects.filter(pk=id, Personnel=request.user).delete()
     return redirect("account:addresses")
 
 
 @login_required
 def set_default(request, id):
-    Address.objects.filter(customer=request.user, default=True).update(default=False)
-    Address.objects.filter(pk=id, customer=request.user).update(default=True)
+    Address.objects.filter(Personnel=request.user, default=True).update(default=False)
+    Address.objects.filter(pk=id, Personnel=request.user).update(default=True)
 
     previous_url = request.META.get("HTTP_REFERER")
 
