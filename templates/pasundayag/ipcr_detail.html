@@ -1,0 +1,215 @@
+{% extends "adminlte/base.html" %}
+{% load static %}
+{% block extra_head %}
+<style>
+  th {
+    text-align: center;
+    min-height: 50;
+  }
+  td {
+    text-align: left;
+  }
+  .form-field {
+    width: 100%;
+    height: 100%;
+    border: none;
+    box-sizing: border-box;
+    background-color: rgb(244,246,249);
+  }
+  
+</style>
+{% endblock extra_head %}
+
+{% block stylesheet %}{% static 'pasundayag/css/pasundayag.css' %}{% endblock %}
+{% block title %}
+{% if ipcr %}{{ ipcr.title }}{% else %}IPCR{% endif %}
+{% endblock %}
+{% block content %}
+  <div class="container-fluid pb-5">
+    <h1 class="h1 font-weight-bold">Individual Performance and Commitment Review</h1>
+    {% if pf_ipcr_count > 0 or psf_iocr_count > 0 %}
+      <form method="post">
+        {% csrf_token %}
+        
+        
+        <div class="row">
+          <div class="col">
+            <div class="col col-lg-3 text-start p-3">
+              <div class="card border-0">
+                <div class="card-body px-0">
+                  <p class="card-text px-2 py-3">
+                    <a class="h4 text-success text-decoration-none" href="">Ratee: {{ personnel.name }}
+                    </a>
+                  </p>
+                  <div class="p-2">Year: {{year}}</div>
+                  <div class="p-2">Period: {{period}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <div class="col p-3">
+              <div class="text-left">
+                <p><b>Rating Scale</b>
+                <br>5 - Outstanding
+                <br>4 - Very Satisfactory
+                <br>3 - Satisfactory
+                <br>2 - Unsatisfactory
+                <br>1 - Poor</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table data-toggle="table" class="table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" rowspan="2">MFO/PAP</th>
+              <th scope="col" rowspan="2">SUCCESS INDICATORS (Targets + Measures) </th>
+              <th scope="col" rowspan="2">Actual Accomplishments</th>
+              <th scope="col" colspan="3">Rating</th>
+              <th scope="col" rowspan="2">Remarks</th>
+
+            </tr>
+            <tr>
+              <th scope="col" width="3%">Q</th>
+              <th scope="col" width="3%">E</th>
+              <th scope="col" width="3%">T</th>
+            </tr>
+            <tr>
+          </thead>
+          <tbody>
+          <!-- Loop area_list -->
+          {% for area in area_list %}
+            <tr class="font-weight-bold">
+              <td>{{area.description}} ({{area.percent|floatformat:0}}%)</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+
+            <!-- Loop function_list -->
+            {% for function in function_list %}
+            {% if function.area == area %}
+              <tr>
+                <td {% if function.area.description == '2 CORE FUNCTIONS' %}class="font-weight-bold" {% endif%}>{% if function.mfo_pap %}{{function.mfo_pap}}{% endif %}</td>
+                <td>{% if function.indicators %}{{function.indicators}}{% endif %}</td>
+                {% if not function.area.description == "2 CORE FUNCTIONS" %}
+                <td>
+                  <input type="text" name="{{ function.accomplishments }}" 
+                  value="{{ function.accomplishments }}"
+                  class="form-field">
+                </td>
+                <td>
+                  <input type="text" name="{{ function.rating_Q }}"
+                    value="{{ function.rating_Q }}"
+                    class="form-field">
+                </td>
+                <td>
+                  <input type="text" name="{{ function.rating_E }}"
+                    value="{{ function.rating_E.value|default:'' }}"
+                    class="form-field">
+                </td>
+                <td>
+                  <input type="text" name="{{ function.rating_T.name }}"
+                    value="{{ function.rating_T.value|default:'' }}"
+                    class="form-field">
+                </td>
+                <td>
+                  <input type="text" name="{{ function.remarks.name }}"
+                    value="{{ function.remarks.value|default:'' }}"
+                    class="form-field">
+                </td>
+                {% else %}
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                {% endif %}
+              </tr>
+              <!-- Loop subfunction_list -->
+              {% for subfunction in sfunction_list %}
+              {% if subfunction.function == function %}
+
+                <input type="hidden" name="{{ personnel.name }}" 
+                value="{{personnel.id}}"
+                class="form-field">
+
+                <input type="hidden" name="{{ year }}" 
+                value="{{year}}"
+                class="form-field">
+
+                <input type="hidden" name="{{ period }}" 
+                value="{{period}}"
+                class="form-field">
+                
+                <tr>
+                  <td>{% if subfunction.mfo_pap %}{{subfunction.mfo_pap}}{% endif %}</td>
+                  <td>{% if subfunction.indicators %}{{subfunction.indicators}}{% endif %}</td>
+                  <td>
+                    <input type="text" name="{{ subfunction.accomplishments }}"
+                      value="{{ subfunction.accomplishments }}"
+                      class="form-field">
+                  </td>
+                  <td>
+                    <input type="text" name="{{ subfunction.rating_Q }}"
+                      value="{{ subfunction.rating_Q}}"
+                      class="form-field">
+                  </td>
+                  <td>
+                    <input type="text" name="{{ subfunction.rating_E}}"
+                      value="{{ subfunction.rating_E }}"
+                      class="form-field">
+                  </td>
+                  <td>
+                    <input type="text" name="{{ subfunction.rating_T }}"
+                      value="{{ subfunction.rating_T }}"
+                      class="form-field">
+                  </td>
+                  <td>
+                    <input type="text" name="{{subfunction.remarks}}"
+                      value="{{ subfunction.remarks }}"
+                      class="form-field">
+                  </td>
+                </tr>
+              {% endif %}
+              {% endfor %}
+            {% endif %}
+            {% endfor %}
+          {% endfor %}
+          </tbody>
+        </table>
+        <div class=py-2>
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+      </form>
+    {% else %}
+    <div class="col-12">There are currently no active IPCR for <strong>{{period}}</strong> of the year <strong>{{year}}</strong> for <strong>{{personnel.name}}</strong>.
+    </div> 
+    {% endif %}
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+
+    <script>
+      $(document).on('click', '#add-button', function (e) {
+        e.preventDefault();
+        $.ajax({
+          type: 'POST',
+          url: '{% url "basket:basket_add" %}',
+          data: {
+            ipcrid: $('#add-button').val(),
+            ipcrqty: $('#select option:selected').text(),
+            csrfmiddlewaretoken: "{{csrf_token}}",
+            action: 'post'
+          },
+          success: function (json) {
+            document.getElementById("basket-qty").innerHTML = json.qty
+          },
+          error: function (xhr, errmsg, err) { }
+        });
+      })
+    </script>
+{% endblock %}
