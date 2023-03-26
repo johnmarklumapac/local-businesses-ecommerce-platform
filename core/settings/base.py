@@ -10,21 +10,19 @@ DEBUG = True
 ALLOWED_HOSTS = ["yourdomain.com", "127.0.0.1", "localhost"]
 
 INSTALLED_APPS = [
-    "adminlte3",
-    "adminlte3_theme",
+    'adminlte3',
+    'adminlte3_theme',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
     "pasundayag",
-    "basket",
     "account",
-    "orders",
     "mptt",
     "core",
-    "checkout",
 ]
 
 MIDDLEWARE = [
@@ -51,7 +49,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "pasundayag.context_processors.ranks",
-                "basket.context_processors.basket",
             ],
         },
     },
@@ -92,7 +89,6 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
-
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 MEDIA_URL = "/media/"

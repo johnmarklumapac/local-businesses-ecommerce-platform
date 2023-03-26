@@ -38,7 +38,8 @@ class Personnel(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     name = models.CharField(max_length=150)
     mobile = models.CharField(max_length=20, blank=True)
-    rank = models.CharField(max_length=50)
+    rank = models.ForeignKey("pasundayag.Rank", on_delete=models.PROTECT, verbose_name=_("Rank"))
+    avatar = models.ImageField(blank=True, null=True, upload_to="userprofile_images/")
     area_of_assignment = models.CharField(max_length=50)
     gender = models.CharField(max_length=15)
     employee_status = models.CharField(max_length=15)
@@ -58,7 +59,6 @@ class Personnel(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-
     objects = CustomAccountManager()
 
     USERNAME_FIELD = "email"
@@ -78,7 +78,7 @@ class Personnel(AbstractBaseUser, PermissionsMixin):
         )
 
     def __str__(self):
-        return self.name
+        return self.name + " (" + self.rank.name + ")"
 
 
 class Address(models.Model):

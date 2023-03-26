@@ -17,7 +17,7 @@
 
 {% block content %}
 
-  <div class="container">
+  <div class="container-fluid">
     <div class="alert alert-primary fw600 rounded-0 border-0 pb-3" role="alert">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-info-circle me-2"
         viewBox="0 0 16 16">
@@ -34,17 +34,41 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           <h1 class="m-0">CSU Perfomance Appraisal System</h1>
-          <div class="dropdown">
-            <a class="" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ rank.name }}
-              <i class="fas fa-caret-down"></i>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{% url 'pasundayag:ipcr-list' %}">All</a>
-              {% for r in ranks %}
-              <a class="dropdown-item" href="{% url 'pasundayag:rank-list' r.slug %}">{{ r.name }}</a>
-              {% endfor %}
-            </div>
+          <div class="pb-2">
+            <form id="eval-form">
+              <div class="form-row">
+                <div class="col">
+                  <select class="form-control" id="personnel" name="personnel" required>
+                    <option value="" selected>Please select personnel to rate...</option>
+                    {% for personnel in personnel_list %}
+                    {% if personnel.rank ==  rank.name %}
+                      <option value="{{ personnel.id }}">{{ personnel.name }}</option>
+                    {% endif%}
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col">
+                  <select class="form-control" id="year" name="year" required>
+                    <option value="" selected>Please select year...</option>
+                    {% for year in years %}
+                      <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col">
+                  <select class="form-control" id="period" name="period" required>
+                    <option value="" selected>Please select period...</option>
+                      <option value="Jan-Jun">January to June</option>
+                      <option value="Jul-Dec">July to December</option>
+                  </select>
+                </div>
+                <div class="col">
+                  <button class="btn btn-primary" type="button" onclick="redirectToEval(document.getElementById('personnel').value, document.getElementById('year').value, document.getElementById('period').value)">Rate</button>
+                  <button class="btn btn-primary" type="button" onclick="redirectToView(document.getElementById('personnel').value, document.getElementById('year').value, document.getElementById('period').value)">View</button>
+                  <input type="hidden" id="personnel_id" name="personnel_id" value="">
+                </div>
+              </div>
+            </form>
           </div>
         </div>
         <div class="col-sm-6">
@@ -58,64 +82,73 @@
   </div>
 
   <section class="content">
-    <div class="container-fluid"> 
-      {% if not ipcrs %} 
-      <div class="col-12">There are currently no active IPCRs.
-      </div> 
-      {% else %}
-      {% for ipcr in ipcrs %} 
-      <div class="row border rounded mb-1">
-        <div class="col col-lg-2 text-center p-3"> 
-          {% for image in ipcr.ipcr_image.all %} 
-          {% if image.is_feature%} 
-          <img class="rounded-circle border" alt="Rounded Image" width="100" height="100" src="{{ image.image.url }}" alt="{{ image.image.alt_text }}"> 
-          {% endif %} 
-          {% endfor %} </div>
-          <div class="col col-lg-3 text-start p-3">
-            <div class="card border-0">
-              <div class="card-body px-0">
-                <p class="card-text px-2 py-3">
-                  <a class="h4 text-success text-decoration-none" href="{% url 'pasundayag:ipcr-detail' ipcr.slug %}">{{ ipcr.title|slice:":50" }}
-                  </a>
-                </p>
-                <div class="p-2">{{ipcr.rank}} | {{ipcr.ipcr_type}}</div>
-              </div>
-            </div>
-          </div>
+    <div class="dropdown pb-3">
+      <a class="" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Filter: {{ rank.name }}
+        <i class="fas fa-caret-down"></i>
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="{% url 'pasundayag:ipcr-list' %}">All</a>
+        {% for r in ranks %}
+        <a class="dropdown-item" href="{% url 'pasundayag:rank-list' r.slug %}">{{ r.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="container"> 
+    {% if not ipcr_list %} 
+		<div class="col-12">There are currently no active IPCRs.
+		</div> 
+		{% else %}
+		<div class="row row-cols-2 g-2">
+			{% for ipcr in ipcr_list %}
+			<div class="col mb-3">
+			<div class="card mb-3 p-2 h-100" style="max-width: 540px;">
+				<div class="row g-0">
+					<div class="col-md-4 p-3 text-center">
+						{% if ipcr.personnel.avatar %} 
+						<img class="rounded-circle border" alt="Rounded Image" width="150" height="150" src="{{ ipcr.personnel.avatar.url }}" alt="{{ image.image.alt_text }}"> 
+						{% else %}
+						<img class="rounded-circle border" alt="Rounded Image" width="150" height="150" src="{% static 'account/default-profile.jpg' %}" alt="{{ image.image.alt_text }}"> 
+						{% endif %}
+					</div>
+					<div class="col-md-8 p-2">
+						<div class="card-body">
+							<a class="h4 text-success text-decoration-none" href="{% url 'pasundayag:ipcr-detail-rating' ipcr.personnel.id ipcr.year ipcr.period %}">{{ ipcr.personnel.name|slice:":50" }}
+							</a>
+							<p class="card-text">
+								{{ipcr.ipcr_type}} - {{ipcr.year}} ({{ipcr.period}})
+								<br>
+								{{ipcr.final_numerical_rating|floatformat:2}}
+								({{ipcr.final_adjectival_rating}})
+							</p>
+							<p class="card-text">
+								<small class="text-muted">{{ipcr.personnel.rank}}</small>
+							</p>
+						</div>
+					</div>
+				</div>
+        	</div>
+    		</div>
+      {% endfor %}
+    </div>
 
-          <div class="col col-lg-3 text-start p-3">
-            <div class="card border-0">
-              <div class="card-body px-2">
-                <p class="card-text px-2 py-3">
-                  <a class="h4 text-success text-decoration-none" href="{% url 'pasundayag:ipcr-detail' ipcr.slug %}">{{ipcr.final_adjectival_rating}}
-                  </a>
-                </p>
-                <div class="p-2">Final Adjectival Rating
-                </div>
-              </div>
-            </div>
+      {% endif %}
+      {% if ipcr_list.has_other_pages %}
+            <nav aria-label="Page navigation container wow fadeInUp"></nav>
+            <ul class="pagination justify-content-center wow fadeInUp py-3">
+                {% if ipcr_list.has_previous %}
+                <li><a href="?page={{ ipcr_list.previous_page_number }}"
+                        class="btn btn-primary">&laquo; Prev </a></li>
+                {% endif %}
+                {% if ipcr_list.has_next %}
+                <li><a href="?page={{ ipcr_list.next_page_number }}" class="btn btn-primary">
+                        Next &raquo;</a></li>
+                {% endif %}
+            </ul>
+            </nav>
           </div>
-          
-          <div class="col col-lg-4 text-start p-3">
-            <div class="card border-0">
-              <div class="card-body px-2">
-                <p class="card-text px-2 py-3">
-                <a class="h3 text-decoration-none text-success" href="{% url 'pasundayag:ipcr-detail' ipcr.slug %}">{{ipcr.final_numerical_rating|floatformat:2}}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                    <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-                  </svg>
-                </a> <small>(3.02% increase than previous IPCR rating)</small>
-                </p>
-                <div class="p-2">Final Numerical Rating
-                </div>
-              </div>
-            </div>
-            <br>
-              </div>
-            </div> 
-            {% endfor %} 
-            {% endif %} 
-          </div>      
+        {% endif %}       
+            
         </div>
       </div>
     </div>

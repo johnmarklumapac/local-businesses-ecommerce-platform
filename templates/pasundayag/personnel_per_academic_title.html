@@ -1,0 +1,103 @@
+
+{% extends "adminlte/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+  <style>
+    .dropdown-toggle .fa-caret-down {
+      transition: all 0.3s;
+      transform: rotate(0deg);
+    }
+    
+    .dropdown.show .fa-caret-down {
+      transform: rotate(180deg);
+    }
+  </style>
+{% endblock extra_head %}
+
+{% block content %}
+
+  <div class="container-fluid">
+    <div class="alert alert-primary fw600 rounded-0 border-0 pb-3" role="alert">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-info-circle me-2"
+        viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+        <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+      </svg>
+      CSU Perfomance Appraisal System - <u>Click here for our latest updates</u>. We are doing our best to make CSU the spearhead of the future. Thank you for
+      your patience and support.
+    </div>
+  </div>
+
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">CSU Perfomance Appraisal System - {{rank.name}}</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">IPCRs</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="dropdown pb-3">
+      <a class="" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Filter: {{ rank.name }}
+        <i class="fas fa-caret-down"></i>
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {% for r in ranks %}
+        <a class="dropdown-item" href="{% url 'pasundayag:personnel-list' r.slug %}">{{ r.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="container-fluid">
+      {% if personnel_count == 0 %} 
+      <div class="col-12">There are currently no active personnel for the academic title <strong>{{rank.name}}</strong>.
+      </div> 
+      {% else %} 
+      <table id="rankTable" class="table table-hover shadow">
+        <thead>
+          <tr>
+            <th scope="col">Personnel</th>
+            <th scope="col">Current IPCR</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for personnel in personnel_list %}
+          <tr>
+            <td><a href="">{{personnel.name}}</a></td>
+            <td></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+    </div>
+  </section>
+  
+  {% endblock %}
+
+  {% block extra_js %}
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#rankTable').dataTable({
+    
+        select: {
+          style: 'os',
+          items: 'cell'
+        }
+      });
+    });
+  </script>
+  {% endblock %}

@@ -1,0 +1,158 @@
+{% extends "adminlte/base.html" %}
+{% load static %}
+{% block extra_head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<style>
+  th {
+    text-align: center;
+    min-height: 50;
+  }
+  td {
+    text-align: left;
+  }
+  
+</style>
+{% endblock extra_head %}
+
+{% block stylesheet %}{% static 'pasundayag/css/pasundayag.css' %}{% endblock %}
+{% block title %}
+{% if ipcr %}{{ ipcr.title }}{% else %}IPCR{% endif %}
+{% endblock %}
+{% block content %}
+  <div class="container-fluid pb-5">
+    <small><a href="{% url 'pasundayag:ipcr-list' %}">IPCR </a> > {{personnel.rank}}  > {{personnel.name}} > Analytics</small>
+    <h1 class="h1 font-weight-bold">IPCR Analytics - {{personnel.name}} ({{personnel.rank}})</h1>
+    
+    {% for annualipcr in annual_ipcrs %}
+      {{annualipcr.personnel.name}} - {{annualipcr.annual_numerical_rating}} ({{annualipcr.year}})
+    {% endfor %}
+  <!-- Main row -->
+  <div class="row">
+    <!-- right col (We are only adding the ID to make the widgets sortable)-->
+    <section class="col-lg-12 connectedSortable">
+
+      <!-- Custom tabs (Charts with tabs)-->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title px-2">
+            <i class="fas fa-chart-line mr-1"></i>
+            Histogram
+          </h3>
+          
+          <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+              <li class="nav-item">
+                <a class="nav-link active" href="#histogram-chart-3" data-toggle="tab">3 Years</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#histogram-chart-5" data-toggle="tab">5 Years</a>
+              </li>
+            </ul>
+          </div>
+        </div><!-- /.card-header -->
+        
+        <div class="card-body">
+          <div class="tab-content p-0">
+            <!-- Morris chart - Sales -->
+            <div class="chart tab-pane active" id="histogram-chart-3"
+                style="position: relative; height: 600px;">
+                <canvas id="histogram-chart-3-canvas" height="150" style="height: 150px;"></canvas>
+            </div>
+            <div class="chart tab-pane" id="histogram-chart-5" style="position: relative; height: 600px;">
+              <canvas id="histogram-chart-5-canvas" height="150" style="height: 150px;"></canvas>
+            </div>
+          </div>
+        </div><!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </section>
+    <!-- right col -->
+  </div>
+  <!-- /.row (main row) -->
+  <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+   <script>
+    function redirectToEval() {
+      var personnelId = document.getElementById('personnel').value;
+      var year = document.getElementById('year').value;
+      var period = document.getElementById('period').value;
+      document.getElementById('personnel_id').value = personnelId;
+      var form = document.getElementById('eval-form');
+      form.action = "rate-personnel/" + personnelId + "-" + year + "-" + period;
+      form.submit();
+      }
+
+      function redirectToView() {
+        var personnelId = document.getElementById('personnel').value;
+        var year = document.getElementById('year').value;
+        var period = document.getElementById('period').value;
+        document.getElementById('personnel_id').value = personnelId;
+        var form = document.getElementById('eval-form');
+        var url = "/ipcr-detail/" + personnelId + "-" + year + "-" + period + "/";
+        window.location.href = url;
+      }    
+  </script>
+  <script>
+      function saveData(el, ipcr_id) {
+        // get the field and value to update
+        var field = el.getAttribute("data-field");
+        var value = el.innerHTML;
+    
+        // make the AJAX call to update the IPCR data
+        $.ajax({
+            url: '/update_ipcr/',
+            type: 'POST',
+            data: {
+                'field': field,
+                'value': value,
+                'ipcr_id': ipcr_id
+            },
+            success: function(data) {
+                console.log('Data updated successfully');
+            }
+        });
+    }
+  </script>
+  <script>
+    var xValues = [{%for annualipcr in annual_ipcrs_3%}"{{annualipcr.year}}",{%endfor%}];
+
+    new Chart("histogram-chart-3-canvas", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{ 
+          label: 'Personnel Perfomance',
+          data: [{%for annualipcr in annual_ipcrs_3%}{{annualipcr.annual_numerical_rating}},{%endfor%}],
+          borderColor: "rgb(108,117,125)",
+          fill: false
+        }]
+      },
+      options: {
+        legend: {display: true}
+      }
+    });
+  </script>
+
+  <script>
+    var xValues = ["Jan-Jun 2018", "Jul-Dec 2018", "Jan-Jun 2019", "Jul-Dec 2019", "Jan-Jun 2020", "Jul-Dec 2020", "Jan-Jun 2021", "Jul-Dec 2021", "Jan-Jun 2022", "Jul-Dec 2022"];
+
+    new Chart("histogram-chart-5-canvas", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{ 
+          label: 'Personnel Perfomance',
+          data: [3, 3.8, 4.6, 4.5, 5, 4.5, 4.65, 4.8, 5, 4.4],
+          borderColor: "rgb(108,117,125)",
+          fill: false
+        }]
+      },
+      options: {
+        legend: {display: true}
+      }
+    });
+  </script>
+      
+
+    
+
+    {% endblock %}
