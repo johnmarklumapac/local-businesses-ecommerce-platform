@@ -1,0 +1,550 @@
+{% extends "adminlte/base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block extra_head %}
+<style>
+  th {
+    text-align: center;
+    min-height: 50;
+  }
+  td {
+    text-align: left;
+  }
+  .my-form-field {
+    border: none;
+    width: 50px;
+}
+</style>
+{% endblock extra_head %}
+
+{% block stylesheet %}{% static 'pasundayag/css/pasundayag.css' %}{% endblock %}
+{% block title %}
+{% if form %}{{ form.title }}{% else %}{% endif %}
+{% endblock %}
+{% block content %}
+  <div class="container-fluid pb-5">
+    <small><a href="{% url 'pasundayag:ipcr-list' %}">IPCR </a> >  {{ipcr.personnel.rank}} > {{ipcr.personnel.name}}</small>
+    <h1 class="h1 font-weight-bold">Individual Performance and Commitment Review</h1>
+    <div class="row">
+      <div class="col">
+        <div class="col col-lg-3 text-start p-3">
+          <div class="card border-0">
+            <div class="card-body px-0">
+              <p class="card-text px-2 py-3">
+                <a class="h4 text-success text-decoration-none" href="">Ratee: {{ ipcr.personnel.name }}
+                </a>
+              </p>
+              <div class="p-2">Year: {{ipcr.year}}</div>
+              <div class="p-2">Period: {{ipcr.period}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="col p-3">
+          <div class="text-left">
+            <p><b>Rating Scale</b>
+            <br>5 - Outstanding
+            <br>4 - Very Satisfactory
+            <br>3 - Satisfactory
+            <br>2 - Unsatisfactory
+            <br>1 - Poor</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form method="POST">
+    {%csrf_token%}
+    <input type="hidden" name="personnel" value="{{ ipcr.personnel.id }}">
+    <input type="hidden" name="year" value="{{ ipcr.year }}">
+    <input type="hidden" name="period" value="{{ ipcr.period }}">
+    <input type="hidden" name="ipcr_type" value="1">
+    <input type="hidden" name="rank" value="{{ personnel.rank.name }}">
+    <table data-toggle="table" class="table-bordered">
+
+      <thead>
+        <tr>
+          <th scope="col" rowspan="2">MFO/PAP</th>
+          <th scope="col" rowspan="2">SUCCESS INDICATORS (Targets + Measures) </th>
+          <th scope="col" rowspan="2">Actual Accomplishments</th>
+          <th scope="col" colspan="4">Rating</th>
+          <th scope="col" rowspan="2">Remarks</th>
+        </tr>
+        <tr>
+          <th scope="col" width="4%">Q</th>
+          <th scope="col" width="4%">E</th>
+          <th scope="col" width="4%">T</th>
+          <th scope="col" width="4%">A</th>
+        </tr>
+        <tr>
+      </thead>
+      <tbody>
+        <!-- Strategic Functions -->
+        <tr class="font-weight-bold">
+          <td>1 Strategic Functions (30%)</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.1 Percentage of graduates (2 years prior) that are enrolled </td>
+          <td>60% of graduates (2 years prior) that are employed) </td>
+          <td>35% were employed</td>
+          <td id="stra_q1">{{form.stra_q1}}</td>
+          <td id="stra_e1">{{form.stra_e1|attr:"class:my-form-field"}}</td>
+          <td id="stra_t1" >{{form.stra_t1}}</td>
+          <td id="stra_a1">{{form.stra_a1|attr:"class:my-form-field"}}</td>
+          <td>2nd semester, AY 2019-2020</td>
+        </tr>
+        <tr>
+          <td>1.2 Percentage of undergraduate student population enrolled in CHED-ldentlfied and RDC-ldentifled priority
+            programs.</td>
+          <td>50% of undergraduate student population enrolled in CHED­identified and RDC-identified priority programs
+          </td>
+          <td>100% of the undergraduate student population enrolled In CHED-identlfied and RDC­ldentifled priority
+          </td>
+          <td ></td>
+          <td >{{form.stra_e2|attr:"class:my-form-field"}}</td>
+          <td ></td>
+          <td id="stra_a2">{{form.stra_a2|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.3 Percentage of graduate students enrolled in research degree programs</td>
+          <td>60% of graduate students enrolled in research degree programs </td>
+          <td>100% -- part of the MSIT curriculum Is MSIT 199 (Thesis) </td>
+          <td >{{form.stra_q3}}</td>
+          <td >{{form.stra_e3|attr:"class:my-form-field"}}</td>
+          <td >{{form.stra_t3}}</td>
+          <td id="stra_a3">{{form.stra_a3|attr:"class:my-form-field"}}</td>
+          <td>2nd semester, AY 2019-2020</td>
+        </tr>
+        <tr>
+          <td height="50"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{form.stra_total|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold">2 CORE FUNCTIONS (60%) </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold">2.1 Academic </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.1.1 Presentation of the course syllabus </td>
+          <td>Presented/discussed the course syllabus for all subject load assignments </td>
+          <td>2/2 presented </td>
+          <td >{{form.core_q1|attr:"class:my-form-field"}}</td>
+          <td >{{form.core_e1|attr:"class:my-form-field"}}</td>
+          <td >{{form.core_t1|attr:"class:my-form-field"}}</td>
+          <td id="core_a1">{{form.core_a1|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.1.2 Prepares Learning Materials </td>
+          <td>No. of teaching learning activities (TLAs) conducted incorporating the
+            21st century skills (6 C's: Character, Citizenship, Collaboration, Communication, Creativity, Critical
+            Thinking)
+            (Target: 60% of the total teaching load)</td>
+          <td>Conducted 4 TLAs </td>
+          <td></td>
+          <td >{{form.core_e2|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a2">{{form.core_a2|attr:"class:my-form-field"}}</td>
+          <td>Lecture, Guided Exercise,
+            Re adlng Assignment, Oral
+            Recitation </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>No. of learning materials relevant to the subject matter
+            incorporating the 21st century skills (6 C's: Character, Citizenship, Collaboration, Communication,
+            Creativity, Critical Thinking)
+            (Target: 60% of the total teaching load) </td>
+          <td>6 learning materials </td>
+          <td></td>
+          <td >{{form.core_e3|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a3">{{form.core_a3|attr:"class:my-form-field"}}</td>
+          <td> reference books; 2 sites; 6 learning materials (design, SQL, View, Pasundayagd Proc,
+            Triggers, and Data Migration)</td>
+        </tr>
+        <tr>
+          <td>2 .1. 3 Monitoring students' learning progress and achievement of learning outcomes </td>
+          <td>No. of assessment processes conducted (2 per subject) </td>
+          <td>9 assesments conducted </td>
+          <td></td>
+          <td >{{form.core_e4|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a4">{{form.core_a4|attr:"class:my-form-field"}}</td>
+          <td>3 Written Exercises, 4 Practical Exercises, Project, Exam</td>
+        </tr>
+        <tr>
+          <td>2 .1.4 PES Students' Rating </td>
+          <td>[23, 25) 5 </td>
+          <td></td>
+          <td></td>
+          <td id="core_e5">{{form.core_e5|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a5">{{form.core_a5|attr:"class:my-form-field"}}</td>
+          <td>2nd Semester, AY 2019-2020</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>[22, 23) 4 </td>
+          <td>22.677 </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>[20, 22) : 3 </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>[19, 20) 2 </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>Below 19 : 1 </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>No. of thesis / dissertation advisees who defended on time
+            Target: Number of Students enrolled in thesis (Individual or by
+            group) divided by the No. of faculty members In the Program </td>
+          <td>5 out of 5 </td>
+          <td></td>
+          <td></td>
+          <td >{{form.core_e6|attr:"class:my-form-field"}}</td>
+          <td >{{form.core_t1|attr:"class:my-form-field"}}</td>
+          <td id="core_a6">{{form.core_a6|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td height="50"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{form.core_acad_total|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td class="font-weight-bold">2.2 Improving Research Productivity </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.2.1 Publishes papers from completed research In reputable or high-Impact journals </td>
+          <td># of published research papers (within 3 years) </td>
+          <td>Not mandatory for Instructor-Assistant Professor Rank </td>
+          <td >{{form.core_e7|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td >{{form.core_e7|attr:"class:my-form-field"}}</td>
+          <td id="core_a7">{{form.core_a7|attr:"class:my-form-field"}}</td>
+        </tr>
+        <tr>
+          <td>2.2.2 Presents papers from completed research </td>
+          <td># of presented research papers </td>
+          <td>Not mandatory for Instructor-Assistant Professor Rank</td>
+          <td></td>
+          <td >{{form.core_e8|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a8">{{form.core_a8|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.2.3 Submits Inventions/Innovations for patenting</td>
+          <td># of research outputs for patenting (within 3 years) </td>
+          <td>Not Applicable </td>
+          <td></td>
+          <td >{{form.core_e9|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a9">{{form.core_a9|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.2.3 Generates research funding </td>
+          <td>Amount of research funding generated </td>
+          <td>Not mandatory for instructor-Assistant</td>
+          <td></td>
+          <td >{{form.core_e10|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a10">{{form.core_a10|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.2.4 Implements R&D projects/programs </td>
+          <td># of R&D projects Implemented as Lead Implementer or co-implementor </td>
+          <td>Not mandatory for Instructor-Asslstant</td>
+          <td></td>
+          <td >{{form.core_e11|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a11">{{form.core_a11|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.2.5 Submitted paper was cited or utilized </td>
+          <td># of papers cited or utilized (within 5 years) </td>
+          <td>Not mandatory for Instructor-Assista</td>
+          <td></td>
+          <td >{{form.core_e12|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a12">{{form.core_a12|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td height="50"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{form.core_prod_total|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td class="font-weight-bold">2.3 Technical Advisory /Extension </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.3.1 Provides training to clients to equip with technical know-how </td>
+          <td># of clients provided with training </td>
+          <td>10+ clients trained/facilitated </td>
+          <td></td>
+          <td >{{form.core_e13|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a13">{{form.core_a13|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.3.2 Provides advisory services/technology transfer to Identified cllentele. </td>
+          <td>2.3.2 Provides advisory services/technology transfer to Identified cllentele. </td>
+          <td>5 clients provided with technical advisory </td>
+          <td></td>
+          <td >{{form.core_e14|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a14">{{form.core_a14|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.3.3 Packages extension project/program proposal aligned with the priority agenda of the government for
+            funding </td>
+          <td># of extension projects/programs for implementation </td>
+          <td>- BFAR.AQUAR
+            - ANHS-Extension
+            - DSWD-Extenslon</td>
+          <td></td>
+          <td >{{form.core_e15|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="core_a15">{{form.core_a15|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.3.4 Extension training program evaluation implemented</td>
+          <td>% of trainees evaluating the training course as good or better</td>
+          <td>80% of trainees evaluating the training course as good or better </td>
+          <td >{{form.core_q2|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td></td>
+          <td id="core_a16">{{form.core_a16|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>% of the trainees evaluated the technical advisory services received as good or better </td>
+          <td>100% evaluated the technical advisory services received as good or better</td>
+          <td >{{form.core_q3|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td></td>
+          <td id="core_a17">{{form.core_a17|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.3.5 Conducts follow-up on the status of the training provided for
+            the utilization of the technologies for viable enterprise </td>
+          <td>% of trainees who utilized thE! technologies for viable enterprise </td>
+          <td>Not Applicable </td>
+          <td></td>
+          <td >{{form.core_e16}}</td>
+          <td></td>
+          <td id="core_a18">{{form.core_a18|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.3.6 Generates Funding for the Extension Services </td>
+          <td>Amount of Funding generated for extension services </td>
+          <td>P 36,000.00 </td>
+          <td >{{form.core_q4|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td></td>
+          <td id="core_a19">{{form.core_a19 |attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td height="50"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{form.core_tech_total|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td class="font-weight-bold">3 SUPPORT FUNTIONS (10%)</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="fw-bold">3.1 Involvement during enrollment</td>
+          <td>No. of tasks assigned during enrollment </td>
+          <td>2 Task assigned during enrollment</td>
+          <td></td>
+          <td >{{form.supp_e1|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="supp_a1">{{form.supp_a1|attr:"class:my-form-field"}}</td>
+          <td>Task Force and MIS related functions</td>
+        </tr>
+        <tr>
+          <td>3.2 Faculty Development </td>
+          <td>No. of seminars / trainings/ conference attended </td>
+          <td>2 trainings attended [Coursera)</td>
+          <td></td>
+          <td >{{form.supp_e2|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="supp_a2">{{form.supp_a2|attr:"class:my-form-field"}}</td>
+          <td>Coursera </td>
+        </tr>
+        <tr>
+          <td>3.3 Participation /attendance to functions/ activities </td>
+          <td>No. of activities or functions attended </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.3.1 Department </td>
+          <td></td>
+          <td>100% attendance </td>
+          <td></td>
+          <td >{{form.supp_e3|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="supp_a3">{{form.supp_a3|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.3.2 College </td>
+          <td></td>
+          <td>100% attendance </td>
+          <td></td>
+          <td >{{form.supp_e4|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="supp_a4">{{form.supp_a4|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.3.3 University </td>
+          <td></td>
+          <td>100% attendance </td>
+          <td></td>
+          <td >{{form.supp_e5|attr:"class:my-form-field"}}</td>
+          <td></td>
+          <td id="supp_a5">{{form.supp_a5|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.4 Submission of the required reports or documents to supervisor</td>
+          <td>No. of reports submitted </td>
+          <td>No. of reports submitted </td>
+          <td></td>
+          <td></td>
+          <td >{{form.supp_t1|attr:"class:my-form-field"}}</td>
+          <td id="supp_a6">{{form.supp_a6|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td height="50"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{form.supp_total|attr:"class:my-form-field"}}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-primary my-3" type="submit">Submit</button>
+    <a class="btn btn-danger my-3" href="{% url 'pasundayag:ipcr-detail-rating' ipcr.personnel.id ipcr.year ipcr.period %}">Cancel</a>
+    </form>
+
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+    {% endblock %}

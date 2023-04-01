@@ -41,6 +41,23 @@ class Customer(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     name = models.CharField(max_length=150)
     mobile = models.CharField(max_length=20, blank=True)
+    rank = models.ForeignKey("pasundayag.Rank", on_delete=models.SET_NULL, verbose_name=_("Rank"), blank=True, null=True)
+    avatar = models.ImageField(blank=True, null=True, upload_to="userprofile_images/")
+    area_of_assignment = models.CharField(max_length=50, blank=True, null=True)
+    gender = models.CharField(max_length=15, blank=True, null=True)
+    employee_status = models.CharField(max_length=15, blank=True, null=True)
+    birthdate = models.DateTimeField(null=True, blank=True)
+    age = models.PositiveIntegerField(null=True, blank=True)
+    hightest_educational_level = models.CharField(_("highest educational level"), max_length=50, blank=True, null=True)
+    degree = models.CharField(_("degree"), max_length=50, blank=True, null=True)
+    ra_1080 = models.BooleanField(default=False)
+    ra_9258 = models.BooleanField(default=False)
+    csc_prof = models.BooleanField(default=False)
+    csc_sub_prof = models.BooleanField(default=False)
+    pd_907 = models.BooleanField(default=False)
+    tesda = models.BooleanField(default=False)
+    length_of_service = models.IntegerField(null=True, blank=True)
+    date_hired = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -65,7 +82,10 @@ class Customer(AbstractBaseUser, PermissionsMixin):
         )
 
     def __str__(self):
-        return self.name
+        if self.rank:
+            return self.name + " (" + self.rank.name + ")"
+        else: 
+            return self.name
 
 class Address(models.Model):
     """
