@@ -21,8 +21,8 @@
   <div class="container-fluid pb-5">
     {% if ipcr == None %}
     <small><a href="{% url 'pasundayag:ipcr-list' %}">IPCR </a> >  {{personnel.rank}} > {{personnel.name}}</small>
-    <h1 class="h1 font-weight-bold">Individual Performance and Commitment Review</h1>
-    <div class="col-12">There are currently no active IPCR for <strong>{{period}}</strong> of the year <strong>{{year}}</strong> for <strong>{{personnel.name}}</strong>.
+    <h1 class="h1 font-weight-bold">Individual Performance Commitment and Review</h1>
+    <div class="col-12">There is currently no active IPCR for <strong>{{period}}</strong> of the year <strong>{{year}}</strong> for <strong>{{personnel.name}}</strong>. <a href="{% url 'pasundayag:rate-personnel' personnel.id year period %}">Click here</a> to create one.
     </div> 
     {% else %}
     <small><a href="{% url 'pasundayag:ipcr-list' %}">IPCR </a> >  {{ipcr.personnel.rank}} > {{ipcr.personnel.name}}</small>
@@ -36,11 +36,11 @@
         {% endif %} 
       </div>
       <div class="col-lg-4 text-center pt-5 text-start">
-        <h1>{{ipcr.personnel.name}}</h2>
-        <h4>{{ipcr.personnel.rank}} - {{ipcr.year}} ({{ipcr.period}})</h4>
+        <h3>{{ipcr.personnel.name}}</h3>
+        <h4>{{ipcr.rank}} - {{ipcr.year}} ({{ipcr.period}})</h4>
         <small>({{ipcr.ipcr_type}})</small>
       </div>
-      <div class="col-lg-5 text-center pt-4 px-3 border">
+      <div class="col-lg-5 text-center pt-4 px-3 border border-top-0 border-bottom-0 border-right-0">
         <div class="h1 text-success">{{ipcr.final_numerical_rating|floatformat:2}} ({{ipcr.final_numerical_percent}}%)</div>
         <div class="h4 text-success">{{ipcr.final_adjectival_rating}}</div>
         {% if prev_ipcr %}
@@ -71,7 +71,7 @@
           <input type="hidden" class="form-control" id="personnel" name="personnel" value="{{ipcr.personnel.id}}"/>
           <div class="col">
             <select class="form-control" id="year" name="year" required>
-              <option value="" selected>Please select year...</option>
+              <option value="" selected>Select year...</option>
               {% for year in years %}
                 <option value="{{ year }}">{{ year }}</option>
               {% endfor %}
@@ -79,7 +79,7 @@
           </div>
           <div class="col">
             <select class="form-control" id="period" name="period" required>
-              <option value="" selected>Please select period...</option>
+              <option value="" selected>Select period...</option>
                 <option value="Jan-Jun">January to June</option>
                 <option value="Jul-Dec">July to December</option>
             </select>
@@ -124,19 +124,19 @@
         <tr>
           <td>1.1 Percentage of graduates (2 years prior) that are enrolled </td>
           <td>60% of graduates (2 years prior) that are employed) </td>
-          <td>35% were employed</td>
+          <td class="invisible">35% were employed</td>
           <td id="stra_q1" data-pk="{{ipcr.pk}}"contentEditable="true" onBlur="saveData(this, {{ipcr.id}})">{{ipcr.stra_q1|floatformat:2}}</td>
           <td id="stra_e1" data-pk="{{ipcr.pk}}"contentEditable="true" onBlur="saveData(this, {{ipcr.id}})">{{ipcr.stra_e1|floatformat:2}}</td>
           <td id="stra_t1" data-pk="{{ipcr.pk}}"contentEditable="true" onBlur="saveData(this, {{ipcr.id}})">{{ipcr.stra_t1|floatformat:2}}</td>
           <td>{{ipcr.stra_a1|floatformat:2}}</td>
-          <td>2nd semester, AY 2019-2020</td>
+          <td class="invisible">2nd semester, AY 2019-2020</td>
         </tr>
         <tr>
           <td>1.2 Percentage of undergraduate student population enrolled in CHED-ldentlfied and RDC-ldentifled priority
             programs.</td>
           <td>50% of undergraduate student population enrolled in CHED­identified and RDC-identified priority programs
           </td>
-          <td>100% of the undergraduate student population enrolled In CHED-identlfied and RDC­ldentifled priority
+          <td class="invisible">100% of the undergraduate student population enrolled In CHED-identlfied and RDC­ldentifled priority
           </td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.stra_q2|floatformat:2}}</td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.stra_e2|floatformat:2}}</td>
@@ -147,12 +147,12 @@
         <tr>
           <td>1.3 Percentage of graduate students enrolled in research degree programs</td>
           <td>60% of graduate students enrolled in research degree programs </td>
-          <td>100% -- part of the MSIT curriculum Is MSIT 199 (Thesis) </td>
+          <td class="invisible">100% -- part of the MSIT curriculum Is MSIT 199 (Thesis) </td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.stra_q3|floatformat:2}}</td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.stra_e3|floatformat:2}}</td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.stra_t3|floatformat:2}}</td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.stra_a3|floatformat:2}}</td>
-          <td>2nd semester, AY 2019-2020</td>
+          <td class="invisible">2nd semester, AY 2019-2020</td>
         </tr>
         <tr>
           <td height="50"></td>
@@ -187,10 +187,10 @@
         <tr>
           <td>2.1.1 Presentation of the course syllabus </td>
           <td>Presented/discussed the course syllabus for all subject load assignments </td>
-          <td>2/2 presented </td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_q1|floatformat:2}}</td>
+          <td class="invisible">2/2 presented </td>
+          <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e1|floatformat:2}}</td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_t1|floatformat:2}}</td>
+          <td></td>
           <td>{{ipcr.core_a1|floatformat:2}}</td>
           <td></td>
         </tr>
@@ -200,12 +200,12 @@
             21st century skills (6 C's: Character, Citizenship, Collaboration, Communication, Creativity, Critical
             Thinking)
             (Target: 60% of the total teaching load)</td>
-          <td>Conducted 4 TLAs </td>
+          <td class="invisible">Conducted 4 TLAs </td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e2|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a2|floatformat:2}}</td>
-          <td>Lecture, Guided Exercise,
+          <td class="invisible">Lecture, Guided Exercise,
             Re adlng Assignment, Oral
             Recitation </td>
         </tr>
@@ -215,38 +215,38 @@
             incorporating the 21st century skills (6 C's: Character, Citizenship, Collaboration, Communication,
             Creativity, Critical Thinking)
             (Target: 60% of the total teaching load) </td>
-          <td>6 learning materials </td>
+          <td class="invisible">6 learning materials </td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e3|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a3|floatformat:2}}</td>
-          <td> reference books; 2 sites; 6 learning materials (design, SQL, View, Pasundayagd Proc,
+          <td class="invisible"> reference books; 2 sites; 6 learning materials (design, SQL, View, Pasundayagd Proc,
             Triggers, and Data Migration)</td>
         </tr>
         <tr>
           <td>2 .1. 3 Monitoring students' learning progress and achievement of learning outcomes </td>
           <td>No. of assessment processes conducted (2 per subject) </td>
-          <td>9 assesments conducted </td>
+          <td class="invisible">9 assesments conducted </td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e4|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a4|floatformat:2}}</td>
-          <td>3 Written Exercises, 4 Practical Exercises, Project, Exam</td>
+          <td class="invisible">3 Written Exercises, 4 Practical Exercises, Project, Exam</td>
         </tr>
         <tr>
           <td>2 .1.4 PES Students' Rating </td>
           <td>[23, 25) 5 </td>
           <td></td>
-          <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_q1|floatformat:2}}</td>
+          <td ></td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a5|floatformat:2}}</td>
-          <td>2nd Semester, AY 2019-2020</td>
+          <td class="invisible">2nd Semester, AY 2019-2020</td>
         </tr>
         <tr>
           <td></td>
           <td>[22, 23) 4 </td>
-          <td>22.677 </td>
+          <td class="invisible">22.677 </td>
           <td></td>
           <td></td>
           <td></td>
@@ -284,13 +284,13 @@
           <td></td>
         </tr>
         <tr>
+          <td>2.1.5 Thesis/Dissertation Advising</td>
           <td>No. of thesis / dissertation advisees who defended on time
             Target: Number of Students enrolled in thesis (Individual or by
             group) divided by the No. of faculty members In the Program </td>
-          <td>5 out of 5 </td>
           <td></td>
           <td></td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e6|floatformat:2}}</td>
+          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e5|floatformat:2}}</td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_t1|floatformat:2}}</td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a6|floatformat:2}}</td>
           <td></td>
@@ -319,19 +319,19 @@
         <tr>
           <td>2.2.1 Publishes papers from completed research In reputable or high-Impact journals </td>
           <td># of published research papers (within 3 years) </td>
-          <td>Not mandatory for Instructor-Assistant Professor Rank </td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e7|floatformat:2}}</td>
+          <td class="invisible">Not mandatory for Instructor-Assistant Professor Rank </td>
           <td></td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e7|floatformat:2}}</td>
+          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e6|floatformat:2}}</td>
+          <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a7|floatformat:2}}</td>
           <td></td>
         </tr>
         <tr>
           <td>2.2.2 Presents papers from completed research </td>
           <td># of presented research papers </td>
-          <td>Not mandatory for Instructor-Assistant Professor Rank</td>
+          <td class="invisible">Not mandatory for Instructor-Assistant Professor Rank</td>
           <td></td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e8|floatformat:2}}</td>
+          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e7|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a8|floatformat:2}}</td>
           <td></td>
@@ -339,9 +339,9 @@
         <tr>
           <td>2.2.3 Submits Inventions/Innovations for patenting</td>
           <td># of research outputs for patenting (within 3 years) </td>
-          <td>Not Applicable </td>
+          <td class="invisible">Not Applicable </td>
           <td></td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e9|floatformat:2}}</td>
+          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e8|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a9|floatformat:2}}</td>
           <td></td>
@@ -349,9 +349,9 @@
         <tr>
           <td>2.2.3 Generates research funding </td>
           <td>Amount of research funding generated </td>
-          <td>Not mandatory for instructor-Assistant</td>
+          <td class="invisible">Not mandatory for instructor-Assistant</td>
           <td></td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e10|floatformat:2}}</td>
+          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e9|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a10|floatformat:2}}</td>
           <td></td>
@@ -359,9 +359,9 @@
         <tr>
           <td>2.2.4 Implements R&D projects/programs </td>
           <td># of R&D projects Implemented as Lead Implementer or co-implementor </td>
-          <td>Not mandatory for Instructor-Asslstant</td>
+          <td class="invisible">Not mandatory for Instructor-Asslstant</td>
           <td></td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e11|floatformat:2}}</td>
+          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e10|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a11|floatformat:2}}</td>
           <td></td>
@@ -369,9 +369,9 @@
         <tr>
           <td>2.2.5 Submitted paper was cited or utilized </td>
           <td># of papers cited or utilized (within 5 years) </td>
-          <td>Not mandatory for Instructor-Assista</td>
+          <td class="invisible">Not mandatory for Instructor-Assista</td>
           <td></td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e12|floatformat:2}}</td>
+          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e11|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a12|floatformat:2}}</td>
           <td></td>
@@ -400,9 +400,9 @@
         <tr>
           <td>2.3.1 Provides training to clients to equip with technical know-how </td>
           <td># of clients provided with training </td>
-          <td>10+ clients trained/facilitated </td>
+          <td class="invisible">10+ clients trained/facilitated </td>
           <td></td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e13|floatformat:2}}</td>
+          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e12|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a13|floatformat:2}}</td>
           <td></td>
@@ -410,9 +410,9 @@
         <tr>
           <td>2.3.2 Provides advisory services/technology transfer to Identified cllentele. </td>
           <td>2.3.2 Provides advisory services/technology transfer to Identified cllentele. </td>
-          <td>5 clients provided with technical advisory </td>
+          <td class="invisible">5 clients provided with technical advisory </td>
           <td></td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e14|floatformat:2}}</td>
+          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e13|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a14|floatformat:2}}</td>
           <td></td>
@@ -421,11 +421,11 @@
           <td>2.3.3 Packages extension project/program proposal aligned with the priority agenda of the government for
             funding </td>
           <td># of extension projects/programs for implementation </td>
-          <td>- BFAR.AQUAR
+          <td class="invisible">- BFAR.AQUAR
             - ANHS-Extension
             - DSWD-Extenslon</td>
           <td></td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e15|floatformat:2}}</td>
+          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e14|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a15|floatformat:2}}</td>
           <td></td>
@@ -433,7 +433,7 @@
         <tr>
           <td>2.3.4 Extension training program evaluation implemented</td>
           <td>% of trainees evaluating the training course as good or better</td>
-          <td>80% of trainees evaluating the training course as good or better </td>
+          <td class="invisible">80% of trainees evaluating the training course as good or better </td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_q2|floatformat:2}}</td>
           <td></td>
           <td></td>
@@ -443,7 +443,7 @@
         <tr>
           <td></td>
           <td>% of the trainees evaluated the technical advisory services received as good or better </td>
-          <td>100% evaluated the technical advisory services received as good or better</td>
+          <td class="invisible">100% evaluated the technical advisory services received as good or better</td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_q3|floatformat:2}}</td>
           <td></td>
           <td></td>
@@ -454,9 +454,9 @@
           <td>2.3.5 Conducts follow-up on the status of the training provided for
             the utilization of the technologies for viable enterprise </td>
           <td>% of trainees who utilized thE! technologies for viable enterprise </td>
-          <td>Not Applicable </td>
+          <td class="invisible">Not Applicable </td>
           <td></td>
-          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e16|floatformat:2}}</td>
+          <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_e15|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_a18|floatformat:2}}</td>
           <td></td>
@@ -464,7 +464,7 @@
         <tr>
           <td>2.3.6 Generates Funding for the Extension Services </td>
           <td>Amount of Funding generated for extension services </td>
-          <td>P 36,000.00 </td>
+          <td class="invisible">P 36,000.00 </td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.core_q4|floatformat:2}}</td>
           <td></td>
           <td></td>
@@ -495,22 +495,22 @@
         <tr>
           <td class="fw-bold">3.1 Involvement during enrollment</td>
           <td>No. of tasks assigned during enrollment </td>
-          <td>2 Task assigned during enrollment</td>
+          <td class="invisible">2 Task assigned during enrollment</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.supp_e1|floatformat:2}}</td>
           <td></td>
           <td>{{ipcr.supp_a1|floatformat:2}}</td>
-          <td>Task Force and MIS related functions</td>
+          <td class="invisible">Task Force and MIS related functions</td>
         </tr>
         <tr>
           <td>3.2 Faculty Development </td>
           <td>No. of seminars / trainings/ conference attended </td>
-          <td>2 trainings attended [Coursera)</td>
+          <td class="invisible">2 trainings attended [Coursera)</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.supp_e2|floatformat:2}}</td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.supp_a2|floatformat:2}}</td>
-          <td>Coursera </td>
+          <td class="invisible">Coursera </td>
         </tr>
         <tr>
           <td>3.3 Participation /attendance to functions/ activities </td>
@@ -525,7 +525,7 @@
         <tr>
           <td>3.3.1 Department </td>
           <td></td>
-          <td>100% attendance </td>
+          <td class="invisible">100% attendance </td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.supp_e3|floatformat:2}}</td>
           <td></td>
@@ -535,7 +535,7 @@
         <tr>
           <td>3.3.2 College </td>
           <td></td>
-          <td>100% attendance </td>
+          <td class="invisible">100% attendance </td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.supp_e4|floatformat:2}}</td>
           <td></td>
@@ -545,7 +545,7 @@
         <tr>
           <td>3.3.3 University </td>
           <td></td>
-          <td>100% attendance </td>
+          <td class="invisible">100% attendance </td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.supp_e5|floatformat:2}}</td>
           <td></td>
@@ -555,7 +555,7 @@
         <tr>
           <td>3.4 Submission of the required reports or documents to supervisor</td>
           <td>No. of reports submitted </td>
-          <td>No. of reports submitted </td>
+          <td class="invisible">No. of reports submitted </td>
           <td></td>
           <td></td>
           <td contentEditable="true" onBlur="saveData(this)">{{ipcr.supp_t1|floatformat:2}}</td>
@@ -575,32 +575,32 @@
       </tbody>
     </table>
     <div class="py-2">
-      <button class="btn btn-primary" type="button" onclick="redirectToView(document.getElementById('personnel').value, document.getElementById('year').value, document.getElementById('period').value)">Edit</button>
-      <button class="btn btn-danger" type="button" onclick="redirectToView(document.getElementById('personnel').value, document.getElementById('year').value, document.getElementById('period').value)">Delete</button>
+      <a class="btn btn-primary" type="button" href="{% url 'pasundayag:update-personnel-ipcr' ipcr.id ipcr.personnel.name ipcr.year ipcr.period %}">Edit</a>
       <input type="hidden" id="personnel_id" name="personnel_id" value="">
     </div>
+    
     {% endif %}
     
 
     <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
     <script>
-      function redirectToEval() {
-        var personnelId = document.getElementById('personnel').value;
-        var year = document.getElementById('year').value;
-        var period = document.getElementById('period').value;
-        document.getElementById('personnel_id').value = personnelId;
-        var form = document.getElementById('eval-form');
-        form.action = "rate-personnel/" + personnelId + "-" + year + "-" + period;
-        form.submit();
-      }
-
       function redirectToView() {
         var personnelId = document.getElementById('personnel').value;
         var year = document.getElementById('year').value;
         var period = document.getElementById('period').value;
         document.getElementById('personnel_id').value = personnelId;
         var form = document.getElementById('eval-form');
-        var url = "/ipcr-detail-rating/" + personnelId + "-" + year + "-" + period + "/";
+        var url = "/ipcr-detail-rating/" + personnelId + "-" + year + "-" + period;
+        window.location.href = url;
+      }
+
+      function redirectToUpdate() {
+        var personnelId = document.getElementById('personnel').value;
+        var year = document.getElementById('year').value;
+        var period = document.getElementById('period').value;
+        document.getElementById('personnel_id').value = personnelId;
+        var form = document.getElementById('update-form');
+        var url = "/update-personnel-ipcr/" + personnelId + "-" + year + "-" + period + "/";
         window.location.href = url;
       }    
     </script>

@@ -44,20 +44,37 @@
           </ol>
         </div>
       </div>
+
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <div class="pb-2">
+
+            <form id="filter-form">
+              <div class="form-row">
+                <div class="col">
+                  <select class="form-control" id="rank" name="rank" required>
+                    {% for r in ranks %}
+                      {%if r == rank%}
+                      <option value="{{ r.slug }}" selected>{{ r.name }}</option>
+                      {%else%}
+                      <option value="{{ r.slug }}">{{ r.name }}</option>
+                      {% endif %}
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                  <button class="btn btn-primary" type="button" onclick="redirectToFilterView()">Filter</button>
+                  <input type="hidden" id="rank_slug" name="rank_slug" value="">
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <section class="content">
-    <div class="dropdown pb-3">
-      <a class="" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Filter: {{ rank.name }}
-        <i class="fas fa-caret-down"></i>
-      </a>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {% for r in ranks %}
-        <a class="dropdown-item" href="{% url 'pasundayag:personnel-list' r.slug %}">{{ r.name }}</a>
-        {% endfor %}
-      </div>
-    </div>
     <div class="container-fluid">
       {% if personnel_count == 0 %} 
       <div class="col-12">There are currently no active personnel for the academic title <strong>{{rank.name}}</strong>.
@@ -73,8 +90,12 @@
         <tbody>
           {% for personnel in personnel_list %}
           <tr>
-            <td><a href="">{{personnel.name}}</a></td>
-            <td></td>
+            <td>{{personnel.name}}</td>
+            {% if personnel.annual_ipcr.annual_numerical_rating %}
+            <td>{{ personnel.annual_ipcr.annual_numerical_rating }}</td>
+            {% else %}
+            <td>None</td>
+            {% endif %}
           </tr>
           {% endfor %}
         </tbody>
@@ -83,12 +104,21 @@
     </div>
   </section>
   
-  {% endblock %}
+{% endblock %}
 
-  {% block extra_js %}
+{% block extra_js %}
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
+  <script>
+    function redirectToFilterView(rankSlug) {
+      var rankSlug = document.getElementById('rank').value;
+      document.getElementById('rank_slug').value = rankSlug;
+      var form = document.getElementById('filter-form');
+      var url = "/personnel-list/" + rankSlug;
+      window.location.href = url;
+    }
+  </script>
   <script>
     $(document).ready(function () {
       $('#rankTable').dataTable({
@@ -100,4 +130,4 @@
       });
     });
   </script>
-  {% endblock %}
+{% endblock %}

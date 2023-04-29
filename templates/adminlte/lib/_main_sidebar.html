@@ -1,11 +1,11 @@
 {% load adminlte_helpers %}
 {% load static %}
 <!-- Left side column. contains the sidebar -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="position:fixed">
      <!-- Brand Logo -->
     {% block logo %}
         <a href="" class="brand-link">
-            <img src="{%static 'admin-lte/dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <img src="{%static 'csu-logo.png' %}" alt="" class="brand-image img-circle elevation-3" style="opacity: .8">
             {% block logo_text %}<span class="brand-text font-weight-light">CSU-PAS </span>{% endblock %}
         </a>
     {% endblock %}
@@ -19,7 +19,7 @@
           <img src="{% avatar_url size=90 %}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{% firstof request.user.email %}</a>
+          <a href="#" class="d-block">{% firstof request.user.name %}</a>
         </div>
       </div>
         {% endblock %}
@@ -34,6 +34,7 @@
             <li class="nav-header">{% block nav_heading %}MAIN MENU{% endblock %}</li>
 
             {% block nav_links %}
+            {% if request.user.is_superuser %}
                 <li class="nav-item">
                     {% url 'pasundayag:dashboard' as url %}
                     <a href="{% url 'pasundayag:dashboard' %}" class="nav-link {% if request.path == url %}active{% endif %}">
@@ -49,7 +50,7 @@
                     <ul class="nav nav-treeview menu-open">
                         <li class="nav-item">
                             <a href="{% url 'pasundayag:ipcr-list' %}" class="nav-link">
-                                <i class="nav-icon far fa-circle"></i> IPCR
+                                <i class="nav-icon far fa-circle"></i> All IPCRs
                             </a>
                         </li>
                         <li class="nav-item">
@@ -59,7 +60,15 @@
                         </li>
                     </ul>
                 </li>
-                
+            {% else %}
+                <li class="nav-item">
+                    {% url 'pasundayag:dashboard' as url %}
+                    <a href="{% url 'pasundayag:personnel-ipcr-list' request.user.id%}" class="nav-link {% if request.path == url %}active{% endif %}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>My IPCRs</p>
+                    </a>
+                </li>
+            {% endif %}
             {% endblock nav_links %}
             {% endblock nav_links_outer %}
             </ul>

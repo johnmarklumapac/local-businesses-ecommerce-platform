@@ -78,10 +78,8 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                {%for annual_count in annual_counts_3%}
-                {%if annual_count.year == year%}
+                {%for annual_count in annual_counts%}
                 <h3>{{annual_count.os}}</h3>
-                {%endif%}
                 {%endfor%}
 
                 <p>Outstanding</p>
@@ -89,7 +87,7 @@
               <div class="icon">
                 <i class="fas fa-chart-pie mr-1"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'pasundayag:dashboard-rating' current_year os_label%}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -97,10 +95,8 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                {%for annual_count in annual_counts_3%}
-                {%if annual_count.year == year%}
+                {%for annual_count in annual_counts%}
                 <h3>{{annual_count.vsf}}</h3>
-                {%endif%}
                 {%endfor%}
 
                 <p>Very Satisfactory</p>
@@ -108,7 +104,7 @@
               <div class="icon">
                 <i class="fas fa-chart-pie mr-1"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'pasundayag:dashboard-rating' current_year vsf_label%}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -116,10 +112,8 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                {%for annual_count in annual_counts_3%}
-                {%if annual_count.year == year%}
+                {%for annual_count in annual_counts%}
                 <h3>{{annual_count.sf}}</h3>
-                {%endif%}
                 {%endfor%}
 
                 <p>Satisfactory</p>
@@ -127,7 +121,7 @@
               <div class="icon">
                 <i class="fas fa-chart-pie mr-1"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'pasundayag:dashboard-rating' current_year sf_label%}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -135,10 +129,8 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                {%for annual_count in annual_counts_3%}
-                {%if annual_count.year == year%}
-                <h3>{{annual_count.vsf}}</h3>
-                {%endif%}
+                {%for annual_count in annual_counts%}
+                <h3>{{annual_count.usf}}</h3>
                 {%endfor%}
 
                 <p>Unsatisfactory</p>
@@ -146,7 +138,7 @@
               <div class="icon">
                 <i class="fas fa-chart-pie mr-1"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'pasundayag:dashboard-rating' current_year usf_label%}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -155,10 +147,8 @@
             <!-- small box -->
             <div class="small-box bg-secondary">
               <div class="inner">
-                {%for annual_count in annual_counts_3%}
-                {%if annual_count.year == year%}
+                {%for annual_count in annual_counts%}
                 <h3>{{annual_count.pr}}</h3>
-                {%endif%}
                 {%endfor%}
 
                 <p>Poor</p>
@@ -166,7 +156,7 @@
               <div class="icon">
                 <i class="fas fa-chart-pie mr-1"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'pasundayag:dashboard-rating' current_year pr_label%}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -181,15 +171,12 @@
               <div class="card-header">
                 <h3 class="card-title">
                   <i class="fas fa-chart-bar mr-1"></i>
-                  Overall Performance - {%if current_year %}{{current_year}}{%elif prev_year%}{{prev_year}}{% endif %} 
+                  Overall Performance - {{ year }}
                 </h3>
                 <div class="card-tools">
                   <ul class="nav nav-pills ml-auto">
                     <li class="nav-item">
                       <a class="nav-link active" href="#perf-chart-bar" data-toggle="tab">Bar</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#perf-chart-pie" data-toggle="tab">Donut</a>
                     </li>
                   </ul>
                 </div>
@@ -257,6 +244,9 @@
     
     <!-- /.content -->  
   </div>
+{% endblock %}
+
+{% block extra_js %}
   <script>
     function redirectToView() {
       var year = document.getElementById('year').value;
@@ -267,7 +257,7 @@
   </script>
   <script>
     var xValues = ["1 - Poor", "2 - Unsatisfactory", "3 - Satisfactory", "4 - Very Satisfactory", "5 - Outstanding"];
-    var yValues = [{{pr}}, {{usf}}, {{sf}}, {{vsf}}, {{os}}];
+    var yValues = [{%for annual_count in annual_counts reversed%}{{ annual_count.pr}}, {{ annual_count.usf}}, {{ annual_count.sf}}, {{ annual_count.vsf}}, {{ annual_count.os}}{%endfor%}];
     var barColors = ["rgb(108,117,125)", "rgb(220,53,69)", "rgb(255,193,7)", "rgb(40,167,69)", "rgb(23,162,184)"];
 
     new Chart("perf-chart-bar-canvas", {
@@ -284,7 +274,20 @@
         responsive: true,
         legend: {display: false},
         scales: {
+          xAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Adjectival Rating'
+            },
+
+          }],
           yAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Frequency'
+            },
             ticks: {
               beginAtZero: true,
               max: 100
@@ -295,83 +298,206 @@
     });
   </script>
   <script>
-    var xValues = [{%for year in year_list_3 reversed%}"{{year}}",{%endfor%}];
+    console.log()
+    const url = '/annualipcr-chart/';
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const currentYear = {{ year }};
+        const years = data.filter(obj => obj.year >= currentYear - 2 && obj.year <= currentYear).map(obj => obj.year);
+        const ratingsOrder = ['Outstanding', 'Very Satisfactory', 'Satisfactory', 'Unsatisfactory', 'Poor'];
+        const ratings = Object.keys(data[0]).slice(1).sort((a, b) => ratingsOrder.indexOf(a) - ratingsOrder.indexOf(b));
+        const filteredData = data.filter(obj => obj.year >= currentYear - 2 && obj.year <= currentYear);
+        const countsByRating = ratings.map(rating => {
+          return filteredData.map(obj => obj[rating]);
+        });
 
-    new Chart("histogram-chart-3-canvas", {
-      type: "line",
-      data: {
-        labels: xValues,
-        datasets: [{
-          label: '1 - Poor', 
-          data: [{%for annual_count in annual_counts_3 reversed%}{{annual_cor}},{%endfor%}],
-          borderColor: "rgb(108,117,125)",
-          fill: false
-        }, { 
-          label: '2 - Unsatisfactory', 
-          data: [{%for annual_count in annual_counts_3 reversed%}{{annual_count.usf}},{%endfor%}],
-          borderColor: "rgb(220,53,69)",
-          fill: false
-        }, {
-          label: '3 - Satisfactory',  
-          data: [{%for annual_count in annual_counts_3 reversed%}{{annual_count.sf}},{%endfor%}],
-          borderColor: "rgb(255,193,7)",
-          fill: false
-        }, {
-          label: '4 - Very Satisfactory',  
-          data: [{%for annual_count in annual_counts_3 reversed%}{{annual_count.vsf}},{%endfor%}],
-          borderColor: "rgb(40,167,69)",
-          fill: false
-        }, {  
-          label: '5 - Outstanding', 
-          data: [{%for annual_count in annual_counts_3 reversed%}{{annual_count.os}},{%endfor%}],
-          borderColor: "rgb(23,162,184)",
-          fill: false
-        }]
-      },
-      options: {
-        legend: {display: true}
-      }
-    });
+        const colors = ["rgb(23,162,184)", "rgb(40,167,69)", "rgb(255,193,7)", "rgb(220,53,69)", "rgb(108,117,125)"];
+
+        const ctx = document.getElementById('histogram-chart-3-canvas').getContext('2d');
+        const chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: years,
+            datasets: ratings.map((rating, i) => {
+              return {
+                label: rating,
+                data: countsByRating[i],
+                borderColor: colors[i],
+                fill: false
+              }
+            })
+          },
+          options: {
+            responsive: true,
+            title: {
+              display: true,
+              text: 'Adjectival Ratings Frequency'
+            },
+            tooltips: {
+              mode: 'index',
+              intersect: false
+            },
+            hover: {
+              mode: 'nearest',
+              intersect: true
+            },
+            scales: {
+              xAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Year'
+                }
+              }],
+              yAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Frequency'
+                }
+              }]
+            }
+          }
+        });
+
+        chart.update();
+      });
   </script>
 
   <script>
-    var xValues = [{%for year in year_list_5 reversed%}"{{year}}",{%endfor%}];
+    console.log()
+    const url = '/annualipcr-chart/';
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const currentYear = {{ year }};
+        const years = data.filter(obj => obj.year >= currentYear - 2 && obj.year <= currentYear).map(obj => obj.year);
+        const ratingsOrder = ['Outstanding', 'Very Satisfactory', 'Satisfactory', 'Unsatisfactory', 'Poor'];
+        const ratings = Object.keys(data[0]).slice(1).sort((a, b) => ratingsOrder.indexOf(a) - ratingsOrder.indexOf(b));
+        const filteredData = data.filter(obj => obj.year >= currentYear - 2 && obj.year <= currentYear);
+        const countsByRating = ratings.map(rating => {
+          return filteredData.map(obj => obj[rating]);
+        });
 
-    new Chart("histogram-chart-5-canvas", {
-      type: "line",
-      data: {
-        labels: xValues,
-        datasets: [{
-          label: '1 - Poor', 
-          data: [{%for annual_count in annual_counts_5 reversed%}{{annual_cor}},{%endfor%}],
-          borderColor: "rgb(108,117,125)",
-          fill: false
-        }, { 
-          label: '2 - Unsatisfactory', 
-          data: [{%for annual_count in annual_counts_5 reversed%}{{annual_count.usf}},{%endfor%}],
-          borderColor: "rgb(220,53,69)",
-          fill: false
-        }, {
-          label: '3 - Satisfactory',  
-          data: [{%for annual_count in annual_counts_5 reversed%}{{annual_count.sf}},{%endfor%}],
-          borderColor: "rgb(255,193,7)",
-          fill: false
-        }, {
-          label: '4 - Very Satisfactory',  
-          data: [{%for annual_count in annual_counts_5 reversed%}{{annual_count.vsf}},{%endfor%}],
-          borderColor: "rgb(40,167,69)",
-          fill: false
-        }, {  
-          label: '5 - Outstanding', 
-          data: [{%for annual_count in annual_counts_5 reversed%}{{annual_count.os}},{%endfor%}],
-          borderColor: "rgb(23,162,184)",
-          fill: false
-        }]
-      },
-      options: {
-        legend: {display: true}
-      }
-    });
+        const colors = ["rgb(23,162,184)", "rgb(40,167,69)", "rgb(255,193,7)", "rgb(220,53,69)", "rgb(108,117,125)"];
+
+        const ctx = document.getElementById('histogram-chart-3-canvas').getContext('2d');
+        const chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: years,
+            datasets: ratings.map((rating, i) => {
+              return {
+                label: rating,
+                data: countsByRating[i],
+                borderColor: colors[i],
+                fill: false
+              }
+            })
+          },
+          options: {
+            responsive: true,
+            title: {
+              display: true,
+              text: 'Adjectival Ratings Frequency'
+            },
+            tooltips: {
+              mode: 'index',
+              intersect: false
+            },
+            hover: {
+              mode: 'nearest',
+              intersect: true
+            },
+            scales: {
+              xAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Year'
+                }
+              }],
+              yAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Frequency'
+                }
+              }]
+            }
+          }
+        });
+
+        chart.update();
+      });
   </script>
+  <script>
+    const url2 = '/annualipcr-chart/';
+    fetch(url2)
+      .then(response => response.json())
+      .then(data => {
 
-  {% endblock %}
+        const currentYear2 = {{ year }};
+        const years2 = data.filter(obj => obj.year >= currentYear2 - 4 && obj.year <= currentYear2).map(obj => obj.year);
+        const ratingsOrder2 = ['Outstanding', 'Very Satisfactory', 'Satisfactory', 'Unsatisfactory', 'Poor'];
+        const ratings2 = Object.keys(data[0]).slice(1).sort((a, b) => ratingsOrder2.indexOf(a) - ratingsOrder2.indexOf(b));
+        const filteredData2 = data.filter(obj => obj.year >= currentYear2 - 4 && obj.year <= currentYear2);
+        const countsByRating2 = ratings2.map(rating => {
+          return filteredData2.map(obj => obj[rating]);
+        });
+
+        
+        const colors2 = ["rgb(23,162,184)", "rgb(40,167,69)", "rgb(255,193,7)", "rgb(220,53,69)", "rgb(108,117,125)"];
+        
+        const ctx2 = document.getElementById('histogram-chart-5-canvas').getContext('2d');
+        const chart2 = new Chart(ctx2, {
+          type: 'line',
+          data: {
+            labels: years2,
+            datasets: ratings2.map((rating, i) => {
+              return {
+                label: rating,
+                data: countsByRating2[i],
+                borderColor: colors2[i],
+                fill: false
+              }
+            })
+          },
+          options: {
+            responsive: true,
+            title: {
+              display: true,
+              text: 'Adjectival Ratings Frequency'
+            },
+            tooltips: {
+              mode: 'index',
+              intersect: false
+            },
+            hover: {
+              mode: 'nearest',
+              intersect: true
+            },
+            scales: {
+              xAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Year'
+                }
+              }],
+              yAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Frequency'
+                }
+              }]
+            }
+          }
+        });
+
+        chart2.update();
+      });
+  </script>
+{% endblock %}

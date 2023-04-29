@@ -94,14 +94,15 @@ class IPCR(models.Model):
     )
     year = models.PositiveSmallIntegerField()
     period = models.CharField(max_length=8, choices=PERIODS, default="Select")
+    rank = models.CharField(max_length=255)
     ipcr_type = models.ForeignKey(IPCRType, on_delete=models.PROTECT, verbose_name=_("IPCR Type"))
     is_active = models.BooleanField(
         verbose_name=_("IPCR visibility"),
         help_text=_("Change IPCR visibility"),
         default=True,
     )
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True, editable=False)
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    created_at = models.DateTimeField(_("Created at"), auto_now_add=True, editable=False, blank=True, null=True)
+    updated_at = models.DateTimeField(_("Updated at"), auto_now=True, blank=True, null=True)
 
     stra_e1 = models.DecimalField(max_digits=5, decimal_places=2, default=0.0000)
     stra_e2 = models.DecimalField(max_digits=5, decimal_places=2, default=0.0000)
@@ -343,7 +344,7 @@ class IPCR(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return "(" + str(self.final_numerical_rating) + ") "+ self.personnel.name + "-" + str(self.year) + "-" + self.period
+        return self.personnel.name + "-" + str(self.year) + "-" + self.period + "(" + str(self.final_numerical_rating) + ") "
    
 class AnnualIPCR(models.Model):
     personnel = models.ForeignKey(
@@ -369,6 +370,7 @@ class AnnualIPCR(models.Model):
         related_name = "jul_dec_rating"
 
     )
+    rank = models.CharField(max_length=255)
     annual_numerical_rating = models.DecimalField(blank=True, max_digits=5, decimal_places=2, default=0.0000)
     annual_adjectival_rating = models.CharField(
         verbose_name=_("Annual Adjectival Rating"), blank=True, max_length=255, default="Poor"
@@ -421,11 +423,13 @@ def create_or_update_annual_ipcr(sender, instance, created, **kwargs):
                 personnel=instance.personnel,
                 year=instance.year,
                 jan_jun_final_rating=instance,
+                rank=instance.rank
             )
             annual_ipcr.save()
         else:
             # If an instance exists, update its fields with the values from the new IPCR instance
             annual_ipcr.jan_jun_final_rating = instance
+            annual_ipcr.rank=instance.rank
             annual_ipcr.save()
     else:  # If an existing IPCR instance is updated
         # Check if the IPCR instance is for Jul-Dec period and if it has a final numerical rating
@@ -448,7 +452,8 @@ def save_annual_ipcr(sender, instance, **kwargs):
         AnnualIPCR.objects.create(
             personnel=instance.personnel,
             year=instance.year,
-            jan_jun_final_rating=instance)
+            jan_jun_final_rating=instance,
+            rank=instance.rank)
         instance.personnel.save()
 
 class IPCRSpecificationValue(models.Model):

@@ -11,12 +11,25 @@ admin.site.register(IPCRType)
 class IPCRAdmin(admin.ModelAdmin):
     list_display = (
         "personnel",
+        "rank",
         "year",
         "period",
     )
+    ordering = ('personnel', 'year', 'rank')
     save_as = True
 
 
 admin.site.register(IPCR, IPCRAdmin)
 admin.site.register(Rank, MPTTModelAdmin)
-admin.site.register(AnnualIPCR)
+
+class AnnualIPCRAdmin(admin.ModelAdmin):
+    list_display = (
+        "personnel",
+        "rank",
+        "year",
+        "annual_numerical_rating"
+    )
+    ordering = ('personnel', 'year', 'rank')
+    save_as = True
+
+admin.site.register(AnnualIPCR, AnnualIPCRAdmin)

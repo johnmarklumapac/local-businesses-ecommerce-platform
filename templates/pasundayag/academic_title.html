@@ -74,14 +74,18 @@
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
   <script>
-    $(document).ready(function () {
-      $('#rankTable').dataTable({
-    
-        select: {
-          style: 'os',
-          items: 'cell'
-        }
-      });
-    });
+    $(document).ready(function() {
+      $('#rankTable').dataTable( {
+          "columns": [
+              { "data": "pk", "type": "num" },
+              { "data": "personnel_count", "type": "num" }
+          ],
+          "select": {
+              "style": "os",
+              "items": "cell"
+          },
+          "paging": true
+      } );
+  } );
   </script>
   {% endblock %}

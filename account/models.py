@@ -38,15 +38,15 @@ class Personnel(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     name = models.CharField(max_length=150)
     mobile = models.CharField(max_length=20, blank=True)
-    rank = models.ForeignKey("pasundayag.Rank", on_delete=models.PROTECT, verbose_name=_("Rank"))
+    rank = models.ForeignKey("pasundayag.Rank", on_delete=models.CASCADE, verbose_name=_("Rank"), blank=True, null=True)
     avatar = models.ImageField(blank=True, null=True, upload_to="userprofile_images/")
-    area_of_assignment = models.CharField(max_length=50)
-    gender = models.CharField(max_length=15)
-    employee_status = models.CharField(max_length=15)
+    area_of_assignment = models.CharField(max_length=50, blank=True, null=True)
+    gender = models.CharField(max_length=15, blank=True, null=True)
+    employee_status = models.CharField(max_length=15, blank=True, null=True)
     birthdate = models.DateTimeField(null=True, blank=True)
     age = models.PositiveIntegerField(null=True, blank=True)
-    hightest_educational_level = models.CharField(_("highest educational level"), max_length=50)
-    degree = models.CharField(_("degree"), max_length=50)
+    hightest_educational_level = models.CharField(_("highest educational level"), max_length=50, blank=True, null=True)
+    degree = models.CharField(_("degree"), max_length=50, blank=True, null=True)
     ra_1080 = models.BooleanField(default=False)
     ra_9258 = models.BooleanField(default=False)
     csc_prof = models.BooleanField(default=False)
@@ -78,8 +78,10 @@ class Personnel(AbstractBaseUser, PermissionsMixin):
         )
 
     def __str__(self):
-        return self.name + " (" + self.rank.name + ")"
-
+        if self.rank:
+            return self.name + " (" + self.rank.name + ")"
+        else:
+            return self.name
 
 class Address(models.Model):
     """

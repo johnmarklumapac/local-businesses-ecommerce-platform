@@ -34,20 +34,32 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           <h1 class="m-0">CSU Perfomance Appraisal System</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">IPCR - All</li>
+          </ol>
+        </div>
+      </div>
+
+
+      <div class="row mb-2">
+        <div class="col-sm-8">
           <div class="pb-2">
             <form id="eval-form">
               <div class="form-row">
                 <div class="col">
                   <select class="form-control" id="personnel" name="personnel" required>
-                    <option value="" selected>Please select personnel to rate...</option>
-                    {% for personnel in personnel_list %}
+                    <option value="" selected>Select personnel to rate...</option>
+                    {% for personnel in all_personnel %}
                       <option value="{{ personnel.id }}">{{ personnel.name }}</option>
                     {% endfor %}
                   </select>
                 </div>
                 <div class="col">
                   <select class="form-control" id="year" name="year" required>
-                    <option value="" selected>Please select year...</option>
+                    <option value="" selected>Select year...</option>
                     {% for year in years %}
                       <option value="{{ year }}">{{ year }}</option>
                     {% endfor %}
@@ -55,7 +67,7 @@
                 </div>
                 <div class="col">
                   <select class="form-control" id="period" name="period" required>
-                    <option value="" selected>Please select period...</option>
+                    <option value="" selected>Select period...</option>
                       <option value="Jan-Jun">January to June</option>
                       <option value="Jul-Dec">July to December</option>
                   </select>
@@ -69,89 +81,95 @@
             </form>
           </div>
         </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">IPCRs</li>
-          </ol>
+        <div class="col-sm-4">
+          <div class="pb-2">
+
+            <form id="filter-form">
+              <div class="form-row">
+                <div class="col">
+                  <select class="form-control" id="rank" name="rank" required>
+                    <option value="" selected>All</option>
+                    {% for r in ranks %}
+                      <option value="{{ r.slug }}">{{ r.name }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                  <button class="btn btn-primary" type="button" onclick="redirectToFilterView()">Filter</button>
+                  <input type="hidden" id="rank_slug" name="rank_slug" value="">
+                </div>
+              </div>
+            </form>
+
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 
   <section class="content">
-    <div class="dropdown pb-3">
-      	<a class="" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        	Filter: All
-        	<i class="fas fa-caret-down"></i>
-      	</a>
-      	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        	<a class="dropdown-item" href="">All</a>
-        	{% for r in ranks %}
-        	<a class="dropdown-item" href="{% url 'pasundayag:rank-list' r.slug %}">{{ r.name }}</a>
-        	{% endfor %}
-      	</div>
-    </div>
     <div class="container"> 
 		{% if not ipcrs %} 
 		<div class="col-12">There are currently no active IPCRs.
 		</div> 
 		{% else %}
-		<div class="row row-cols-2 g-2">
-			{% for ipcr in ipcrs %}
+		<div class="row g-2">
+			{% for personnel in personnel_list %}
 			<div class="col mb-3">
-			<div class="card mb-3 p-2 h-100" style="max-width: 540px;">
-				<div class="row g-0">
-					<div class="col-md-4 p-3 text-center">
-						{% if ipcr.personnel.avatar %} 
-						<img class="rounded-circle border" alt="Rounded Image" width="150" height="150" src="{{ ipcr.personnel.avatar.url }}" alt="{{ image.image.alt_text }}"> 
-						{% else %}
-						<img class="rounded-circle border" alt="Rounded Image" width="150" height="150" src="{% static 'account/default-profile.jpg' %}" alt="{{ image.image.alt_text }}"> 
-						{% endif %}
-					</div>
-					<div class="col-md-8 p-2">
-						<div class="card-body">
-							<a class="h4 text-success text-decoration-none" href="{% url 'pasundayag:ipcr-detail-rating' ipcr.personnel.id ipcr.year ipcr.period %}">{{ ipcr.personnel.name|slice:":50" }}
-							</a>
-							<p class="card-text">
-								{{ipcr.ipcr_type}} - {{ipcr.year}} ({{ipcr.period}})
-								<br>
-								{{ipcr.final_numerical_rating|floatformat:2}}
-								({{ipcr.final_adjectival_rating}})
-							</p>
-							<p class="card-text">
-								<small class="text-muted">{{ipcr.personnel.rank}}</small>
-							</p>
-						</div>
-					</div>
-				</div>
-        	</div>
-    		</div>
+        <div class="card mb-3 p-2 h-100">
+          <div class="row g-0">
+            <div class="col-md-12 p-3 text-center">
+              {% if personnel.avatar %} 
+              <img class="rounded-circle border" alt="Rounded Image" width="150" height="150" src="{{ personnel.avatar.url }}" alt="{{ image.image.alt_text }}"> 
+              {% else %}
+              <img class="rounded-circle border" alt="Rounded Image" width="150" height="150" src="{% static 'account/default-profile.jpg' %}" alt="{{ image.image.alt_text }}"> 
+              {% endif %}
+              <div class="card-body">
+                <a class="h6 text-success text-decoration-none" href="{%url 'pasundayag:personnel-ipcr-list' personnel.id %}">{{ personnel.name|slice:":50" }}
+                </a>
+                <p class="card-text">
+                  <small class="text-muted">{{personnel.rank}}</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+    	</div>
       {% endfor %}
     </div>
 
       {% endif %}
-      {% if ipcrs.has_other_pages %}
-            <nav aria-label="Page navigation container wow fadeInUp"></nav>
-            <ul class="pagination justify-content-center wow fadeInUp py-3">
-                {% if ipcrs.has_previous %}
-                <li><a href="?page={{ ipcrs.previous_page_number }}"
-                        class="btn btn-primary">&laquo; Prev </a></li>
-                {% endif %}
-                {% if ipcrs.has_next %}
-                <li><a href="?page={{ ipcrs.next_page_number }}" class="btn btn-primary">
-                        Next &raquo;</a></li>
-                {% endif %}
-            </ul>
-            </nav>
-          </div>
-        {% endif %}       
+      {% if personnel_list.has_other_pages %}
+          <nav aria-label="Page navigation container wow fadeInUp"></nav>
+          <ul class="pagination justify-content-center wow fadeInUp py-3">
+              {% if personnel_list.has_previous %}
+              <li><a href="?page={{ personnel_list.previous_page_number }}"
+                      class="btn btn-primary">&laquo; Prev </a></li>
+              {% endif %}
+              {% if personnel_list.has_next %}
+              <li><a href="?page={{ personnel_list.next_page_number }}" class="btn btn-primary">
+                      Next &raquo;</a></li>
+              {% endif %}
+          </ul>
+          </nav>
+        </div>
+      {% endif %}      
             
         </div>
       </div>
     </div>
   </section>
   <script>
+    
+    function redirectToFilterView(rankSlug) {
+      var rankSlug = document.getElementById('rank').value;
+      document.getElementById('rank_slug').value = rankSlug;
+      var form = document.getElementById('filter-form');
+      form.action = "rank-list/" + rankSlug;
+      form.submit();
+    }
+
     function redirectToEval() {
       var personnelId = document.getElementById('personnel').value;
       var year = document.getElementById('year').value;

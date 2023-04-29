@@ -13,9 +13,11 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="/" class="nav-link">Home</a>
         </li>
+        {% if request.user.is_superuser %}
         <li class="nav-item d-none d-sm-inline-block">
             <a href="/admin/" class="nav-link">Admin</a>
         </li>
+        {% endif %}
     </ul>
 
     {% block nav_bar_center %}

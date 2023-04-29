@@ -1,28 +1,49 @@
-{% extends "./sub_base.html" %}
-{% block title %}Log-in{% endblock %}
-{% block sub_content %}
-
-<form class="account-form" action="{% url 'account:login' %}" method="post">
-  {% csrf_token %}
-  <h3 class="mb-4">Sign In</h3>
-  {% if form.errors %}
-  <div class="alert alert-primary" role="alert">
-    Error: Username or Password not correct!
-  </div>
-  {% endif %}
-  <label class="form-label">{{ form.username.label}}</label>
-  {{ form.username}}
-  <label class="form-label">{{ form.password.label}}</label>
-  {{ form.password}}
-  <div class="d-grid gap-2">
-    <input type="hidden" name="next" value="{{ next }}">
-    <button class="btn btn-primary py-2 mb-4 mt-5 fw-bold" type="submit" value="Log-in">Sign in
-    </button>
-  </div>
-  <div class="flex-column justify-content-center mx-auto pb-3">
-    <div class="text-center"><a href="{% url "account:register" %}">Create an account</a></div>
-    <div class="text-center"><a href="{% url "account:pwdreset" %}">Forgotten Password?</a></div>
-  </div>
-</form>
-
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title></title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<link rel="stylesheet" href="/static/admin-lte/plugins/fontawesome-free/css/fontawesome.min.css">
+		<link rel="stylesheet" href="/static/admin-lte/dist/css/adminlte.min.css">
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+							<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+							<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+							<![endif]-->
+	</head>
+	<body class="hold-transition login-page">
+		<div class="login-box">
+			<div class="login-logo">
+				<a href="/admin/">Login</a>
+			</div>
+			<!-- /.login-logo -->
+			<div class="login-box-body">
+				<p class="login-box-msg">Sign in to start your session</p>
+				<form class="account-form" action="{% url 'account:login' %}" method="post"> {% csrf_token %} <div class="form-group has-feedback">
+						<input type="text" id="id_username" name="username" class="form-control" placeholder="Username">
+						<span class="glyphicon glyphicon-user form-control-feedback"></span>
+					</div>
+					<div class="form-group has-feedback">
+						<input type="password" id="id_password" name="password" class="form-control" placeholder="Password">
+						<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+						<input type="hidden" name="next" value="/admin/" />
+					</div>
+					<div class="row">
+						<!-- /.col -->
+						<div class="col-xs-4">
+							<button type="submit" class="btn btn-primary btn-block btn-flat">Log In</button>
+						</div>
+						<!-- /.col -->
+					</div>
+				</form>
+				<!-- /.login-box-body -->
+			</div>
+			<!-- /.login-box -->
+			<script src="/static/admin-lte/plugins/jquery/jquery.min.js"></script>
+			<script src="/static/admin-lte/plugins/bootstrap/js/bootstrap.min.js"></script>
+	</body>
+</html>

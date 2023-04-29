@@ -69,6 +69,10 @@
     <!-- right col -->
   </div>
   <!-- /.row (main row) -->
+
+{% endblock %}
+
+{% block extra_js %}
   <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
    <script>
     function redirectToEval() {
@@ -113,7 +117,7 @@
     }
   </script>
   <script>
-    var xValues = [{%for annualipcr in annual_ipcrs_3%}"{{annualipcr.year}}",{%endfor%}];
+    var xValues = [{%for annualipcr in annual_ipcrs_3 reversed%}"{{annualipcr.year}}",{%endfor%}];
 
     new Chart("histogram-chart-3-canvas", {
       type: "line",
@@ -121,19 +125,47 @@
         labels: xValues,
         datasets: [{ 
           label: 'Personnel Perfomance',
-          data: [{%for annualipcr in annual_ipcrs_3%}{{annualipcr.annual_numerical_rating}},{%endfor%}],
+          data: [{%for annualipcr in annual_ipcrs_3 reversed%}{{annualipcr.annual_numerical_rating}},{%endfor%}],
           borderColor: "rgb(108,117,125)",
           fill: false
         }]
       },
       options: {
-        legend: {display: true}
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Personnel IPCR Analytics'
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        scales: {
+          xAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Year'
+            }
+          }],
+          yAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Annual IPCR Rating'
+            }
+          }]
+        }
       }
     });
   </script>
 
   <script>
-    var xValues = ["Jan-Jun 2018", "Jul-Dec 2018", "Jan-Jun 2019", "Jul-Dec 2019", "Jan-Jun 2020", "Jul-Dec 2020", "Jan-Jun 2021", "Jul-Dec 2021", "Jan-Jun 2022", "Jul-Dec 2022"];
+    var xValues = [{%for annualipcr in annual_ipcrs_5 reversed%}"{{annualipcr.year}}",{%endfor%}];
 
     new Chart("histogram-chart-5-canvas", {
       type: "line",
@@ -141,18 +173,44 @@
         labels: xValues,
         datasets: [{ 
           label: 'Personnel Perfomance',
-          data: [3, 3.8, 4.6, 4.5, 5, 4.5, 4.65, 4.8, 5, 4.4],
+          data: [{%for annualipcr in annual_ipcrs_5 reversed%}{{annualipcr.annual_numerical_rating}},{%endfor%}],
           borderColor: "rgb(108,117,125)",
           fill: false
         }]
       },
       options: {
-        legend: {display: true}
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Personnel IPCR Analytics'
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        scales: {
+          xAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Year'
+            }
+          }],
+          yAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Annual IPCR Rating'
+            }
+          }]
+        }
       }
     });
   </script>
       
 
-    
-
-    {% endblock %}
+{% endblock %}
